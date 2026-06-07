@@ -5,40 +5,41 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://s3.tradingview.com/tv.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #0b0e14; color: #fff; margin: 0; padding: 15px; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 10px; background: #1f2630; border: none; color: #aaa; border-radius: 5px; }
-        .tab-btn.active { background: #2962ff; color: #fff; }
+        body { font-family: sans-serif; background-color: #0e1621; color: white; margin: 0; padding: 10px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 10px; background: #242f3d; border: none; color: white; border-radius: 5px; }
+        .tab-btn.active { background: #2481cc; }
         .content { display: none; } .content.active { display: block; }
-        .btn-trade { width: 48%; padding: 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .buy { background: #089981; } .sell { background: #f23645; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; background: #131722; border: 1px solid #363c4e; color: white; border-radius: 5px; }
+        .chart-container { height: 350px; width: 100%; }
+        .btn-trade { width: 48%; padding: 20px; border: none; border-radius: 10px; font-weight: bold; }
+        .buy { background: #26a69a; color: white; }
+        .sell { background: #ef5350; color: white; }
     </style>
 </head>
 <body>
     <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('trade')">🚀 Trade</button>
-        <button class="tab-btn" onclick="showTab('chart')">📈 Chart</button>
+        <button class="tab-btn active" onclick="showTab('chart')">📈 Chart</button>
         <button class="tab-btn" onclick="showTab('news')">📰 News</button>
+        <button class="tab-btn" onclick="showTab('trade')">🚀 Trade</button>
     </div>
 
-    <div id="trade" class="content active">
-        <select id="pair"><option value="XAUUSD">XAUUSD</option><option value="BTCUSD">BTCUSD</option><option value="DXY">DXY</option></select>
-        <input type="number" id="lot" placeholder="Lot Size (e.g., 0.01)" step="0.01">
-        <div style="display:flex; gap:10px;">
-            <button class="btn-trade buy" onclick="exec('BUY')">BUY</button>
-            <button class="btn-trade sell" onclick="exec('SELL')">SELL</button>
-        </div>
-    </div>
-
-    <div id="chart" class="content">
-        <div id="tv-chart" style="height:350px;"></div>
+    <div id="chart" class="content active">
+        <select id="symbolSelect" onchange="initChart()" style="width:100%; padding:10px; background:#242f3d; color:white;">
+            <option value="OANDA:XAUUSD">XAUUSD</option>
+            <option value="BINANCE:BTCUSD">BTCUSD</option>
+            <option value="TVC:DXY">DXY</option>
+        </select>
+        <div class="chart-container" id="tv-chart"></div>
     </div>
 
     <div id="news" class="content">
-        <input type="date" id="date">
-        <input type="text" id="topic" placeholder="Analisis/Topik">
-        <button onclick="exec('NEWS')" style="width:100%; padding:15px; background:#2962ff; border:none; color:white;">Analisis Berita</button>
+        <iframe src="https://sslecal2.forexprostools.com/?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&importance=1,2,3&lang=1" width="100%" height="450" frameborder="0"></iframe>
+    </div>
+
+    <div id="trade" class="content" style="text-align:center; margin-top:50px;">
+        <h3>One Click Entry</h3>
+        <button class="btn-trade buy" onclick="sendOrder('BUY')">BUY</button>
+        <button class="btn-trade sell" onclick="sendOrder('SELL')">SELL</button>
     </div>
 
     <script>
@@ -46,13 +47,14 @@
         function showTab(t) {
             document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
             document.getElementById(t).classList.add('active');
+            if(t=='chart') initChart();
         }
-        function exec(type) {
-            let data = { type: type, pair: document.getElementById('pair').value, lot: document.getElementById('lot').value, date: document.getElementById('date').value, topic: document.getElementById('topic').value };
-            Telegram.WebApp.sendData(JSON.stringify(data));
-            Telegram.WebApp.close();
+        function initChart() {
+            document.getElementById("tv-chart").innerHTML = "";
+            new TradingView.widget({"container_id":"tv-chart", "symbol":document.getElementById("symbolSelect").value, "theme":"dark", "autosize":true, "interval":"15"});
         }
-        new TradingView.widget({"container_id":"tv-chart", "symbol":"OANDA:XAUUSD", "theme":"dark", "autosize":true, "interval":"15"});
+        function sendOrder(t) { Telegram.WebApp.sendData(t + "_" + document.getElementById("symbolSelect").value); Telegram.WebApp.close(); }
+        initChart();
     </script>
 </body>
 </html>

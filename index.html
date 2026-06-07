@@ -10,17 +10,14 @@
         .tab-btn { flex: 1; padding: 10px; background: #1f2630; border: none; color: #888; border-radius: 5px; font-weight: bold; cursor: pointer; }
         .tab-btn.active { background: #2962ff; color: #fff; }
         .content { display: none; } .content.active { display: block; }
-        
-        /* Panel Demo Account */
         .demo-panel { background: #17212b; padding: 10px; text-align: center; border-radius: 8px; margin-bottom: 10px; border: 1px solid #2962ff; }
         .demo-panel span { color: #aaa; font-size: 12px; }
         .demo-panel h2 { margin: 5px 0 0 0; color: #089981; font-size: 22px; }
-
         input, select { width: 100%; padding: 10px; margin: 5px 0; background: #242f3d; color: white; border: 1px solid #363c4e; border-radius: 5px; box-sizing: border-box; }
         button.action-btn { width: 100%; padding: 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; }
         .buy { background: #089981; } .sell { background: #f23645; }
-        .trade-row { display: flex; gap: 10px; margin-top: 5px; }
-        .trade-row button { flex: 1; }
+        .trade-row { display: flex; gap: 5px; margin-top: 5px; }
+        .trade-row button, .trade-row input { flex: 1; margin: 0; }
     </style>
 </head>
 <body>
@@ -35,19 +32,26 @@
             <h2>$10,000.00</h2>
         </div>
         
-        <div id="tv-chart" style="height:320px; margin-bottom:10px;"></div>
+        <div id="tv-chart" style="height:300px; margin-bottom:10px;"></div>
         
         <select id="pair" onchange="updateChart()">
-            <option value="XAUUSD">XAUUSD (Gold)</option>
-            <option value="BTCUSD">BTCUSD (Bitcoin)</option>
-            <option value="EURUSD">EURUSD (Euro)</option>
+            <option value="XAUUSD">XAUUSD (Gold - OANDA)</option>
+            <option value="BTCUSDT">BTCUSDT (Bitcoin - BINANCE)</option>
+            <option value="EURUSD">EURUSD (Euro - OANDA)</option>
         </select>
         
         <div class="trade-row">
-            <input type="number" id="lot" placeholder="Lot (Cth: 0.1)" step="0.01" style="width: 40%; margin: 0;">
+            <input type="number" id="lot" placeholder="Lot (Cth: 0.1)" step="0.01">
+            <input type="number" id="tp" placeholder="Harga TP">
+            <input type="number" id="sl" placeholder="Harga SL">
+        </div>
+        
+        <div class="trade-row">
             <button class="action-btn buy" onclick="execTrade('BUY')">BUY</button>
             <button class="action-btn sell" onclick="execTrade('SELL')">SELL</button>
         </div>
+        
+        <button class="action-btn" onclick="execClose()" style="background:#ffa000; margin-top: 10px; padding: 10px;">🔴 TUTUP POSISI AKTIF (CLOSE)</button>
     </div>
 
     <div id="news" class="content">
@@ -56,10 +60,10 @@
         <div style="background: #17212b; padding: 10px; border-radius: 8px; border: 1px solid #363c4e;">
             <h4 style="margin: 0 0 10px 0; color: #2962ff; text-align: center;">🤖 Analisis AI</h4>
             <select id="newsCountry">
-                <option value="Amerika Serikat (US)">🇺🇸 Amerika Serikat (USD)</option>
-                <option value="Eropa (Eurozone)">🇪🇺 Eropa (EUR)</option>
-                <option value="Inggris (UK)">🇬🇧 Inggris (GBP)</option>
-                <option value="Jepang">🇯🇵 Jepang (JPY)</option>
+                <option value="Amerika Serikat (US)">🇺🇸 Amerika Serikat</option>
+                <option value="Eropa (Eurozone)">🇪🇺 Eropa</option>
+                <option value="Inggris (UK)">🇬🇧 Inggris</option>
+                <option value="Jepang">🇯🇵 Jepang</option>
             </select>
             <div style="display: flex; gap: 5px;">
                 <input type="date" id="newsDate" style="flex: 1;">
@@ -81,21 +85,31 @@
         }
 
         function updateChart() {
+            let pair = document.getElementById("pair").value;
+            let symbol = pair === "BTCUSDT" ? "BINANCE:BTCUSDT" : "OANDA:" + pair;
+            
             document.getElementById("tv-chart").innerHTML = "";
             new TradingView.widget({
                 "container_id": "tv-chart", 
-                "symbol": "OANDA:" + document.getElementById("pair").value, 
+                "symbol": symbol, 
                 "theme": "dark", "autosize": true, "interval": "15"
             });
         }
 
         function execTrade(type) {
             let data = { 
-                action: 'TRADE_DEMO', 
+                action: 'OPEN_TRADE', 
                 type: type, 
                 pair: document.getElementById("pair").value, 
-                lot: document.getElementById("lot").value || "0.01"
+                lot: document.getElementById("lot").value || "0.01",
+                tp: document.getElementById("tp").value || "0",
+                sl: document.getElementById("sl").value || "0"
             };
+            Telegram.WebApp.sendData(JSON.stringify(data));
+        }
+
+        function execClose() {
+            let data = { action: 'CLOSE_TRADE' };
             Telegram.WebApp.sendData(JSON.stringify(data));
         }
 

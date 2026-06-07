@@ -4,46 +4,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; background-color: #0e1621; color: white; padding: 15px; }
-        .tab-box { background: #17212b; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-        label { display: block; margin-top: 10px; color: #8899a6; font-size: 12px; }
-        input, select { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: none; background: #242f3d; color: white; }
-        button { width: 100%; padding: 15px; margin-top: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        body { font-family: sans-serif; background-color: #0e1621; color: white; padding: 20px; }
+        .box { background: #17212b; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        button { width: 100%; padding: 15px; margin-top: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
         .btn-trade { background: #2481cc; color: white; }
-        .btn-news { background: #5288c1; color: white; }
     </style>
 </head>
 <body>
-    <h3>🚀 Real-Time Trading</h3>
-    <div class="tab-box">
-        <label>Pilih Pair</label>
-        <select id="pair"><option value="XAUUSD">XAUUSD</option><option value="BTCUSD">BTCUSD</option><option value="DXY">DXY</option></select>
-        <label>Lot Size</label>
-        <input type="number" id="lot" placeholder="0.01">
-        <button class="btn-trade" onclick="send('TRADE')">EKSEKUSI TRADE</button>
-    </div>
-
-    <h3>📰 Historical News Analysis</h3>
-    <div class="tab-box">
-        <label>Pilih Tanggal</label>
-        <input type="date" id="date">
-        <label>Topik/Indikator (Contoh: NFP, CPI)</label>
-        <input type="text" id="topic" placeholder="NFP">
-        <button class="btn-news" onclick="send('NEWS')">ANALISIS NEWS</button>
+    <h3>Dashboard Trading</h3>
+    
+    <div class="box">
+        <label>Pair</label>
+        <select id="pair" style="width:100%; padding:10px;">
+            <option value="XAUUSD">XAUUSD</option>
+            <option value="BTCUSD">BTCUSD</option>
+        </select>
+        <button class="btn-trade" onclick="kirimTrade()">KIRIM TRADE</button>
     </div>
 
     <script>
         Telegram.WebApp.ready();
-        function send(type) {
-            let data = { type: type };
-            if(type === 'TRADE') {
-                data.pair = document.getElementById('pair').value;
-                data.lot = document.getElementById('lot').value;
-            } else {
-                data.date = document.getElementById('date').value;
-                data.topic = document.getElementById('topic').value;
-            }
-            Telegram.WebApp.sendData(JSON.stringify(data));
+        function kirimTrade() {
+            let pair = document.getElementById("pair").value;
+            // Getaran agar tahu tombol diklik
+            Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+            // Mengirim data
+            Telegram.WebApp.sendData("TRADE_" + pair);
+            alert("Data Trade " + pair + " Terkirim!");
             Telegram.WebApp.close();
         }
     </script>

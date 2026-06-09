@@ -39,7 +39,6 @@
         <button class="tab-btn" onclick="showTab('combo', this)">🔄 Combo</button>
     </div>
 
-    <!-- TAB 1: TRADE -->
     <div id="main" class="content active">
         <div class="live-panel">
             <div style="font-size: 12px; color: #aaa;" id="status-text">Menunggu Market...</div>
@@ -62,7 +61,6 @@
         <button class="action-btn" onclick="execClose()" style="background:#ffa000; color:black;">🔴 TUTUP POSISI</button>
     </div>
 
-    <!-- TAB 2: KALENDER -->
     <div id="news" class="content">
         <div style="background: #17212b; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
             <h4 style="color:#2962ff;">🤖 Filter Kalender AI</h4>
@@ -87,9 +85,7 @@
         </div>
     </div>
 
-    <!-- TAB 3: EDUKASI & AI (Diperbarui dengan Tanya Bebas & M0, M1, M2) -->
     <div id="edu" class="content">
-        <!-- FITUR DISKUSI BEBAS & ANALISIS BEBAS -->
         <div style="background: #17212b; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #363c4e;">
             <h4 style="color:#089981;">💡 Diskusi & Tanya Bebas</h4>
             <input type="text" id="freeChat" placeholder="Cth: Kenapa market gold naik terus?">
@@ -138,13 +134,12 @@
                 </div>
             </details>
 
-            <!-- KATEGORI BARU: MONEY SUPPLY (M0, M1, M2) -->
             <details>
                 <summary style="color: #ce93d8;">💱 Monetary Policy (Money Supply)</summary>
                 <div class="edu-grid">
-                    <button class="edu-btn bg-purple" onclick="reqAction('EDUKASI', 'Money Supply M0 (Base Money / Uang Inti)')">Money Supply M0</button>
-                    <button class="edu-btn bg-purple" onclick="reqAction('EDUKASI', 'Money Supply M1 (Narrow Money)')">Money Supply M1</button>
-                    <button class="edu-btn bg-purple" onclick="reqAction('EDUKASI', 'Money Supply M2 (Broad Money / Uang Beredar)')">Money Supply M2</button>
+                    <button class="edu-btn bg-purple" onclick="reqAction('EDUKASI', 'Money Supply M0 (Uang Kartal / Base Money)')">Money Supply M0</button>
+                    <button class="edu-btn bg-purple" onclick="reqAction('EDUKASI', 'Money Supply M1 (Uang Beredar Sempit / Narrow Money)')">Money Supply M1</button>
+                    <button class="edu-btn bg-purple" onclick="reqAction('EDUKASI', 'Money Supply M2 (Uang Beredar Luas / Broad Money)')">Money Supply M2</button>
                 </div>
             </details>
 
@@ -174,7 +169,6 @@
         </div>
     </div>
 
-    <!-- TAB 4: COMBO NEWS -->
     <div id="combo" class="content">
         <div style="background: #17212b; padding: 15px; border-radius: 8px;">
             <p style="font-size:12px; color:#aaa; margin-top:0;">Analisis Rilis Ganda beserta prioritas datanya (Institusional Logic).</p>

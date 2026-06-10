@@ -79,9 +79,12 @@
         <div class="ai-body" id="ai-content">
             <i>Menganalisis data pasar, mohon tunggu beberapa detik... ⏳</i>
         </div>
-        <div class="trade-row" style="margin-bottom: 30px;">
-            <button class="action-btn blue" id="btn-save-ai" style="display: none;" onclick="saveToLibrary()">💾 SIMPAN</button>
-            <button class="action-btn" style="background: #f23645;" onclick="document.getElementById('ai-modal').style.display='none'">TUTUP</button>
+        <div style="margin-bottom: 30px;">
+            <button class="action-btn" id="btn-belum-paham" style="background: #ff9800; color: #000; margin-bottom: 5px; display: none;" onclick="explainLikeTK()">👶 BELUM PAHAM (JELASKAN GAYA TK)</button>
+            <div class="trade-row">
+                <button class="action-btn blue" id="btn-save-ai" style="display: none;" onclick="saveToLibrary()">💾 SIMPAN</button>
+                <button class="action-btn" style="background: #f23645;" onclick="document.getElementById('ai-modal').style.display='none'">TUTUP</button>
+            </div>
         </div>
     </div>
 
@@ -95,7 +98,7 @@
     <div id="main" class="content active">
         <div style="background: #17212b; padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <h4 style="color:#089981; margin:0;">🛠️ StrategyTune Backtest</h4>
-            <div style="font-size: 11px; color: #aaa;">Uji Strategi Anda Secara Presisi</div>
+            <div style="font-size: 11px; color: #aaa;">Uji Strategi Secara Presisi</div>
         </div>
         
         <div style="width: 100%; height: 60vh; overflow-y: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; margin-bottom: 10px; border: 1px solid #363c4e; background: #131722;">
@@ -104,62 +107,221 @@
 
         <div style="background: #17212b; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #363c4e;">
             <h4 style="color:#089981;">📘 E-Book: Master Class Teknikal</h4>
-            <p style="font-size:12px; color:#aaa; margin-top:0;">Panduan visual lengkap menguasai pergerakan harga pasar.</p>
+            <p style="font-size:12px; color:#aaa; margin-top:0;">Ensiklopedia trading terlengkap. Klik materi untuk dianalisis oleh AI.</p>
             
-            <details style="background: #242f3d; padding: 10px; border-radius: 5px; margin-bottom: 8px;">
-                <summary style="color: #2962ff; font-weight: bold;">1. Anatomi Candlestick</summary>
+            <details style="background: #1f2630; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #089981;" open>
+                <summary style="color: #089981; font-weight: bold;">🖼️ Galeri Visual Utama (Cheat Sheet)</summary>
                 <div style="margin-top: 10px; font-size: 12px; line-height: 1.5; color: #e0e0e0;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Candlestick_chart_scheme_03-en.svg/512px-Candlestick_chart_scheme_03-en.svg.png" class="ebook-img">
-                    <b>Bullish (Hijau/Putih):</b> Harga ditutup lebih tinggi dari harga buka. Mengindikasikan dominasi pembeli (buyer).<br><br>
-                    <b>Bearish (Merah/Hitam):</b> Harga ditutup lebih rendah dari harga buka. Mengindikasikan dominasi penjual (seller).<br><br>
-                    <b>Sumbu (Wick / Tail):</b> Garis tipis di atas dan bawah menandakan jejak harga tertinggi dan terendah yang sempat dicapai sebelum akhirnya ditutup.
+                    <p style="margin-top:0;"><b>1. Anatomi Candlestick Dasar</b></p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Candlestick_chart_scheme_03-en.svg" class="ebook-img" alt="Candlestick">
+                    <p><b>2. Prinsip Support & Resistance</b></p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Support_and_Resistance.svg" class="ebook-img" alt="Support Resistance">
+                    <p><b>3. Chart Pattern (Bahu-Kepala-Bahu)</b></p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Head_and_shoulders_top.svg" class="ebook-img" alt="Head and Shoulders">
                 </div>
             </details>
 
-            <details style="background: #242f3d; padding: 10px; border-radius: 5px; margin-bottom: 8px;">
-                <summary style="color: #2962ff; font-weight: bold;">2. Support & Resistance</summary>
-                <div style="margin-top: 10px; font-size: 12px; line-height: 1.5; color: #e0e0e0;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Support_and_Resistance.svg/512px-Support_and_Resistance.svg.png" class="ebook-img">
-                    <b>Support (Lantai):</b> Area level bawah di mana harga sering memantul naik. Di sini minat beli jauh lebih besar mengalahkan tekanan jual.<br><br>
-                    <b>Resistance (Atap):</b> Area level atas di mana harga sering tertahan dan turun. Di sini tekanan jual lebih dominan dari minat beli.<br><br>
-                    <i>Aturan Emas: Jika garis Support tertembus (breakout) ke bawah, garis itu akan berubah fungsi menjadi Resistance baru. Begitu juga sebaliknya.</i>
-                </div>
-            </details>
+            <details><summary>1. Dasar-Dasar Trading</summary><div class="edu-grid">
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Apa itu trading')">Apa itu trading</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Jenis pasar (Forex, Saham, Crypto, Komoditas)')">Jenis Pasar</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Bid, Ask, Spread')">Bid, Ask, Spread</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Lot, Pip, Point')">Lot, Pip, Point</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Leverage dan Margin')">Leverage & Margin</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Long dan Short')">Long dan Short</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Likuiditas pasar')">Likuiditas pasar</button>
+            </div></details>
 
-            <details style="background: #242f3d; padding: 10px; border-radius: 5px; margin-bottom: 8px;">
-                <summary style="color: #2962ff; font-weight: bold;">3. Garis Tren (Trendline)</summary>
-                <div style="margin-top: 10px; font-size: 12px; line-height: 1.5; color: #e0e0e0;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Uptrend-en.svg/512px-Uptrend-en.svg.png" class="ebook-img">
-                    Trendline adalah garis miring yang digunakan untuk mengidentifikasi arah pergerakan pasar utama.<br><br>
-                    <b>Uptrend (Tren Naik):</b> Ditarik dengan menghubungkan 2 titik lembah atau lebih yang posisinya semakin meninggi (Higher Lows).<br><br>
-                    <b>Downtrend (Tren Turun):</b> Ditarik dengan menghubungkan 2 titik puncak atau lebih yang posisinya semakin merendah (Lower Highs).<br><br>
-                    <b>Breakout Tren:</b> Ketika harga menembus keluar dari garis tren, ini merupakan indikasi kuat bahwa pasar akan berbalik arah (reversal).
-                </div>
-            </details>
+            <details><summary>2. Membaca Chart</summary><div class="edu-grid">
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Jenis chart (Line, Bar, Candlestick)')">Jenis Chart</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Timeframe dalam trading')">Timeframe</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Struktur candlestick')">Struktur Candlestick</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Open, High, Low, Close (OHLC)')">OHLC</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Multi Time Frame Analysis')">Multi Time Frame</button>
+            </div></details>
 
-            <details style="background: #242f3d; padding: 10px; border-radius: 5px; margin-bottom: 8px;">
-                <summary style="color: #2962ff; font-weight: bold;">4. Pola Chart (Chart Patterns)</summary>
-                <div style="margin-top: 10px; font-size: 12px; line-height: 1.5; color: #e0e0e0;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Head_and_shoulders_top.svg/512px-Head_and_shoulders_top.svg.png" class="ebook-img">
-                    <b>Head & Shoulders (Kepala & Bahu):</b> Pola pembalikan arah dari naik menjadi turun yang sangat akurat. Terdapat tiga puncak: Puncak tengah (Head) yang paling tinggi, diapit oleh puncak kiri dan kanan yang lebih rendah (Shoulders). Entry Sell dilakukan saat harga tembus garis leher (Neckline).<br><br>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Double_top.svg/512px-Double_top.svg.png" class="ebook-img">
-                    <b>Double Top (Bentuk M):</b> Harga membentur Resistance dua kali berturut-turut namun gagal tembus. Mengindikasikan pembeli sudah kehabisan tenaga dan harga siap terjun bebas.<br><br>
-                    <b>Double Bottom (Bentuk W):</b> Kebalikan dari Double Top. Harga membentur Support dua kali namun tertahan. Mengindikasikan pasar siap memantul terbang.
-                </div>
-            </details>
-            
-            <details style="background: #242f3d; padding: 10px; border-radius: 5px; margin-bottom: 8px;">
-                <summary style="color: #2962ff; font-weight: bold;">5. Indikator (RSI & Moving Average)</summary>
-                <div style="margin-top: 10px; font-size: 12px; line-height: 1.5; color: #e0e0e0;">
-                    <b>RSI (Relative Strength Index):</b> Mengukur momentum harga dengan skala 0 hingga 100.<br>
-                    - Jika indikator menyentuh angka <b>> 70</b>, pasar dianggap <i>Overbought</i> (Jenuh Beli), bersiap mencari peluang SELL.<br>
-                    - Jika indikator menyentuh angka <b>< 30</b>, pasar dianggap <i>Oversold</i> (Jenuh Jual), bersiap mencari peluang BUY.<br><br>
-                    <b>Moving Average (MA):</b> Garis yang mewakili rata-rata harga masa lalu. Jika candlestick berada kokoh di atas garis MA, maka tren secara keseluruhan adalah naik. Jika dua garis MA saling bersilangan dari atas ke bawah (Death Cross), itu merupakan sinyal bahaya dimulainya tren turun jangka panjang.
-                </div>
-            </details>
+            <details><summary>3. Candlestick Pattern</summary><div class="edu-grid">
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Pola Doji')">Doji</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Pola Hammer')">Hammer</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Pola Hanging Man')">Hanging Man</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Pola Shooting Star')">Shooting Star</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Pola Engulfing')">Engulfing</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Pola Harami')">Harami</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Pola Morning Star')">Morning Star</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Pola Evening Star')">Evening Star</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Three White Soldiers')">Three White Soldiers</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Three Black Crows')">Three Black Crows</button>
+            </div></details>
+
+            <details><summary>4. Market Structure</summary><div class="edu-grid">
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Higher High (HH) & Higher Low (HL)')">HH & HL</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Lower High (LH) & Lower Low (LL)')">LH & LL</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Uptrend')">Uptrend</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Downtrend')">Downtrend</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Sideways Market')">Sideways</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Break of Structure (BOS)')">BOS</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Change of Character (CHOCH)')">CHOCH</button>
+            </div></details>
+
+            <details><summary>5. Support & Resistance</summary><div class="edu-grid">
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Support')">Support</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Resistance')">Resistance</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Dynamic Support Resistance')">Dynamic SNR</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Flip Zone')">Flip Zone</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Role Reversal')">Role Reversal</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Strength of Zone')">Strength of Zone</button>
+            </div></details>
+
+            <details><summary>6. Trend Analysis</summary><div class="edu-grid">
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Trendline')">Trendline</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Price Channel')">Channel</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Trend Continuation')">Continuation</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Trend Reversal')">Reversal</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Pullback')">Pullback</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Retracement')">Retracement</button>
+            </div></details>
+
+            <details><summary>7. Supply & Demand</summary><div class="edu-grid">
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Supply Zone')">Supply Zone</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Demand Zone')">Demand Zone</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Fresh Zone')">Fresh Zone</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Tested Zone')">Tested Zone</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Entry Supply Demand')">Entry Strategy</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Confirmation Entry')">Confirmation</button>
+            </div></details>
+
+            <details><summary>8. Smart Money Concept (SMC)</summary><div class="edu-grid">
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Liquidity dalam SMC')">Liquidity</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Equal High dan Equal Low')">EQH / EQL</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Inducement (IDM)')">Inducement</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Liquidity Sweep')">Liquidity Sweep</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Stop Hunt')">Stop Hunt</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Order Block (OB)')">Order Block</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Breaker Block')">Breaker Block</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Mitigation Block')">Mitigation Block</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Fair Value Gap (FVG)')">Fair Value Gap</button>
+            </div></details>
+
+            <details><summary>9. Fibonacci</summary><div class="edu-grid">
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Fibonacci Retracement')">Fibo Retracement</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Fibonacci Extension')">Fibo Extension</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Golden Ratio Fibonacci')">Golden Ratio</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Entry dengan Fibonacci')">Entry Fibo</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Target Profit Fibonacci')">TP Fibo</button>
+            </div></details>
+
+            <details><summary>10. Moving Average</summary><div class="edu-grid">
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Simple Moving Average (SMA)')">SMA</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Exponential Moving Average (EMA)')">EMA</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Golden Cross')">Golden Cross</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Death Cross')">Death Cross</button>
+            </div></details>
+
+            <details><summary>11. Volume Analysis</summary><div class="edu-grid">
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Volume Dasar')">Volume Dasar</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Volume Spike')">Volume Spike</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Volume Confirmation')">Confirmation</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Volume Divergence')">Divergence</button>
+            </div></details>
+
+            <details><summary>12. Indikator Momentum</summary><div class="edu-grid">
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Indikator RSI')">RSI</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Indikator Stochastic')">Stochastic</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Indikator CCI')">CCI</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Williams %R')">Williams %R</button>
+            </div></details>
+
+            <details><summary>13. Indikator Trend</summary><div class="edu-grid">
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Indikator MACD')">MACD</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Indikator ADX')">ADX</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Parabolic SAR')">Parabolic SAR</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Ichimoku Cloud')">Ichimoku Cloud</button>
+            </div></details>
+
+            <details><summary>14. Volatilitas</summary><div class="edu-grid">
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'ATR (Average True Range)')">ATR</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Bollinger Bands')">Bollinger Bands</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Keltner Channel')">Keltner Channel</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Volatility Breakout')">Vol Breakout</button>
+            </div></details>
+
+            <details><summary>15. Chart Pattern</summary><div class="edu-grid">
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Double Top')">Double Top</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Double Bottom')">Double Bottom</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Head and Shoulders')">Head & Shoulders</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Inverse Head and Shoulders')">Inv H&S</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Triangle Pattern')">Triangle</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Wedge Pattern')">Wedge</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Flag Pattern')">Flag</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Cup and Handle')">Cup and Handle</button>
+            </div></details>
+
+            <details><summary>16. Harmonic Pattern</summary><div class="edu-grid">
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Gartley Pattern')">Gartley</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Bat Pattern')">Bat</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Butterfly Pattern')">Butterfly</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Crab Pattern')">Crab</button>
+            </div></details>
+
+            <details><summary>17. Elliott Wave</summary><div class="edu-grid">
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Impulse Wave')">Impulse Wave</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Corrective Wave')">Corrective Wave</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Wave Counting')">Wave Counting</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Fibonacci dalam Elliott Wave')">Fibo & Wave</button>
+            </div></details>
+
+            <details><summary>18. Wyckoff Method</summary><div class="edu-grid">
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Accumulation Wyckoff')">Accumulation</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Distribution Wyckoff')">Distribution</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Spring Wyckoff')">Spring</button>
+                <button class="edu-btn bg-red" onclick="askAI('EBOOK', 'Upthrust Wyckoff')">Upthrust</button>
+            </div></details>
+
+            <details><summary>19. Risk Management</summary><div class="edu-grid">
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Risk Reward Ratio')">Risk Reward</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Position Sizing')">Position Sizing</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Stop Loss & Take Profit')">SL & TP</button>
+                <button class="edu-btn bg-purple" onclick="askAI('EBOOK', 'Maximum Drawdown')">Drawdown</button>
+            </div></details>
+
+            <details><summary>20. Trading Psychology</summary><div class="edu-grid">
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'FOMO Trading')">FOMO</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Revenge Trading')">Revenge Trading</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Overtrading')">Overtrading</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Fear & Greed dalam Trading')">Fear & Greed</button>
+                <button class="edu-btn bg-teal" onclick="askAI('EBOOK', 'Disiplin Trading')">Disiplin</button>
+            </div></details>
+
+            <details><summary>21. Fundamental & News</summary><div class="edu-grid">
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Cara baca Kalender Ekonomi')">Kalender Ekonomi</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'Dampak News Besar ke Market')">Dampak News</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'NFP & FOMC')">NFP & FOMC</button>
+                <button class="edu-btn bg-brown" onclick="askAI('EBOOK', 'CPI & PPI')">CPI & PPI</button>
+            </div></details>
+
+            <details><summary>22. Strategi Trading Lengkap</summary><div class="edu-grid">
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Trend Following Strategy')">Trend Following</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Breakout Trading Strategy')">Breakout Trading</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Reversal Trading Strategy')">Reversal Trading</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Teknik Scalping')">Scalping</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Intraday Trading')">Intraday</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'Swing Trading')">Swing Trading</button>
+                <button class="edu-btn bg-blue" onclick="askAI('EBOOK', 'News Trading Strategy')">News Trading</button>
+            </div></details>
+
+            <details><summary>23. Backtesting</summary><div class="edu-grid">
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Cara Backtest yang benar')">Cara Backtest</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Cara Membaca Statistik Backtest')">Baca Statistik</button>
+                <button class="edu-btn bg-green" onclick="askAI('EBOOK', 'Win Rate & Profit Factor')">Win Rate</button>
+            </div></details>
+
+            <details><summary>24. Trading Plan Profesional</summary><div class="edu-grid">
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Checklist Entry')">Checklist Entry</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Checklist Exit')">Checklist Exit</button>
+                <button class="edu-btn bg-orange" onclick="askAI('EBOOK', 'Jurnal Trading & Evaluasi')">Evaluasi Jurnal</button>
+            </div></details>
         </div>
 
-        <details style="margin-top:15px;">
+        <details style="margin-top:15px;" open>
             <summary style="color: #2962ff;">📝 Buka Jurnal & Catat Trade</summary>
             <div style="margin-top: 10px;">
                 <div id="total-pnl" style="font-size: 15px; font-weight: bold; text-align:center; background: #0b0e14; padding: 10px; border-radius: 5px; color: #fff; margin-bottom:10px;">Total PnL: $0.00</div>
@@ -236,405 +398,35 @@
                     <button class="edu-btn bg-blue" onclick="askAI('EDUKASI', 'Stock Market')">Stock Market</button>
                 </div>
             </details>
-
             <details>
                 <summary style="color: #81c784;">📊 GDP (Gross Domestic Product)</summary>
                 <div class="edu-grid">
                     <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Full Year GDP Growth')">Full Year GDP Growth</button>
                     <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP')">GDP</button>
                     <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Annual Growth Rate')">GDP Annual Growth</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Constant Prices')">GDP Constant Prices</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP from Agriculture')">GDP Agriculture</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP from Construction')">GDP Construction</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP From Government')">GDP Government</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP from Manufacturing')">GDP Manufacturing</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP from Mining')">GDP Mining</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP from Services')">GDP Services</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP from Transport')">GDP Transport</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP from Utilities')">GDP Utilities</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Growth Contribution Consumer Spending')">GDP Contrib. Consumer</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Growth Contribution Exports')">GDP Contrib. Exports</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Growth Contribution Government')">GDP Contrib. Govt</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Growth Contribution Imports')">GDP Contrib. Imports</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Growth Contribution Investment')">GDP Contrib. Investment</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Growth Rate')">GDP Growth Rate</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP per Capita')">GDP per Capita</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP per Capita PPP')">GDP per Capita PPP</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'GDP Sales')">GDP Sales</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Gross Fixed Capital Formation')">Fixed Capital Formation</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Gross National Product')">GNP</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Real Consumer Spending')">Real Consumer Spending</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Weekly Economic Index')">Weekly Economic Index</button>
                 </div>
             </details>
-
             <details>
                 <summary style="color: #ffb74d;">👷 Labour & Employment</summary>
                 <div class="edu-grid">
                     <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'ADP Employment Change')">ADP Employment</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'ADP Employment Change - Large Firms')">ADP Large Firms</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'ADP Employment Change - Mid-Sized Firms')">ADP Mid-Sized Firms</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'ADP Employment Change - Small Firms')">ADP Small Firms</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'ADP Employment Change Weekly')">ADP Weekly</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Average Annual Wages')">Avg Annual Wages</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Average Hourly Earnings MoM')">Avg Hourly Earnings MoM</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Average Hourly Earnings YoY')">Avg Hourly Earnings YoY</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Average Weekly Hours')">Avg Weekly Hours</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Challenger Hiring Plans')">Challenger Hiring Plans</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Challenger Job Cuts')">Challenger Job Cuts</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Chicago Fed Hiring Rate')">Chicago Fed Hiring Rate</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Chicago Fed Layoffs Rate')">Chicago Fed Layoffs</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Continuing Jobless Claims')">Continuing Jobless Claims</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Continuing Jobless Claims - Federal Workers')">Cont. Claims Federal</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Earnings Growth Expectations')">Earnings Growth Exp</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Employed Persons')">Employed Persons</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Employment Cost Index')">Employment Cost Index</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Employment Rate')">Employment Rate</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Full Time Employment')">Full Time Employment</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Government Payrolls')">Government Payrolls</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Gross Average Monthly Wages')">Gross Avg Monthly Wages</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Initial Jobless Claims')">Initial Jobless Claims</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Initial Jobless Claims - Federal Workers')">Initial Claims Federal</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Job Layoffs and Discharges')">Job Layoffs</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Job Openings')">Job Openings</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Job Quits Rate')">Job Quits Rate</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Jobless Claims 4-week Average')">Claims 4-wk Average</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'JOLTs Job Openings')">JOLTs Job Openings</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'JOLTs Job Quits')">JOLTs Job Quits</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Labour Costs')">Labour Costs</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Long Term Unemployment Rate')">Long Term Unemploy.</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Manufacturing Payrolls')">Manufacturing Payrolls</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Mean Unemployment Rate Expectations')">Mean Unemploy. Exp</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Minimum Wages')">Minimum Wages</button>
                     <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Non Farm Payrolls')">Non Farm Payrolls</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Nonfarm Payrolls Private')">Nonfarm Payrolls Pvt</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Nonfarm Productivity')">Nonfarm Productivity</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Part Time Employment')">Part Time Employment</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Participation Rate')">Participation Rate</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Population')">Population</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Productivity')">Productivity</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Real Average Hourly Earnings MoM')">Real Avg Hourly MoM</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Real Average Hourly Earnings YoY')">Real Avg Hourly YoY</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retirement Age Men')">Retirement Age Men</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retirement Age Women')">Retirement Age Women</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'U-6 Unemployment Rate')">U-6 Unemployment</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Unemployed Persons')">Unemployed Persons</button>
                     <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Unemployment Rate')">Unemployment Rate</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Unit Labour Costs')">Unit Labour Costs</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Wage Growth')">Wage Growth</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Wages')">Wages</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Wages in Manufacturing')">Wages Manufacturing</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Youth Unemployment Rate')">Youth Unemployment</button>
                 </div>
             </details>
-
             <details>
                 <summary style="color: #e57373;">🏷️ Prices & Inflation</summary>
                 <div class="edu-grid">
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', '3-Year Consumer Inflation Expectations')">3-Yr Inflation Exp</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', '5-Year Consumer Inflation Expectations')">5-Yr Inflation Exp</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Consumer Inflation Expectations')">Consumer Inflation Exp</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core Consumer Prices')">Core Consumer Prices</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core Inflation Rate MoM')">Core Inflation MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core Inflation Rate YoY')">Core Inflation YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core PCE Price Index')">Core PCE Price Index</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core PCE Price Index MoM')">Core PCE MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core PCE Price Index YoY')">Core PCE YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core PCE Prices QoQ')">Core PCE QoQ</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core PPI MOM')">Core PPI MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core PPI YOY')">Core PPI YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core Producer Prices')">Core Producer Prices</button>
                     <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI')">CPI</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Apparel')">CPI Apparel</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Core Core YoY')">CPI Core Core YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Education')">CPI Education</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Food')">CPI Food</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Housing Utilities')">CPI Housing Utilities</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Median')">CPI Median</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Recreation')">CPI Recreation</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI s.a')">CPI s.a</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Transportation')">CPI Transportation</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'CPI Trimmed-Mean')">CPI Trimmed-Mean</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Energy Inflation')">Energy Inflation</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Export Prices')">Export Prices</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Export Prices MoM')">Export Prices MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Export Prices YoY')">Export Prices YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Food Inflation')">Food Inflation</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'GDP Price Index')">GDP Price Index</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Import Prices')">Import Prices</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Import Prices MoM')">Import Prices MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Import Prices YoY')">Import Prices YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Inflation Rate MoM')">Inflation Rate MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Inflation Rate YoY')">Inflation Rate YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Michigan 5 Year Inflation Expectations')">Mich 5-Yr Inflation Exp</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Michigan Inflation Expectations')">Mich Inflation Exp</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PCE Price Index')">PCE Price Index</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PCE Price Index MoM')">PCE Price MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PCE Price Index YoY')">PCE Price YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PCE Prices QoQ')">PCE Prices QoQ</button>
+                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Core CPI')">Core CPI</button>
                     <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PPI')">PPI</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PPI Ex Food Energy and Trade Services')">PPI Ex Food/Energy</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PPI Ex Food, Energy and Trade MoM')">PPI Ex Food MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PPI Ex Food, Energy and Trade YoY')">PPI Ex Food YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PPI MOM')">PPI MoM</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'PPI YOY')">PPI YoY</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Services Inflation')">Services Inflation</button>
-                    <button class="edu-btn bg-red" onclick="askAI('EDUKASI', 'Shelter Inflation')">Shelter Inflation</button>
                 </div>
             </details>
-
             <details>
                 <summary style="color: #ce93d8;">💱 Money & Banking</summary>
                 <div class="edu-grid">
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Banks Balance Sheet')">Banks Balance Sheet</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Effective Federal Funds Rate')">Effective Fed Funds</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Fed Balance Sheet')">Fed Balance Sheet</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Fed Capital Account Surplus')">Fed Cap Acct Surplus</button>
                     <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Fed Interest Rate')">Fed Interest Rate</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Foreign Bond Investment')">Foreign Bond Inv.</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Foreign Exchange Reserves')">FX Reserves</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Loans to Private Sector')">Loans to Pvt Sector</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Money Supply M0')">Money Supply M0</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Money Supply M1')">Money Supply M1</button>
                     <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Money Supply M2')">Money Supply M2</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Private Debt to GDP')">Pvt Debt to GDP</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Proxy Funds Rate')">Proxy Funds Rate</button>
-                    <button class="edu-btn bg-purple" onclick="askAI('EDUKASI', 'Secured Overnight Financing Rate')">SOFR</button>
-                </div>
-            </details>
-
-            <details>
-                <summary style="color: #4db6ac;">🚢 Trade</summary>
-                <div class="edu-grid">
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Auto Exports')">Auto Exports</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Balance of Trade')">Balance of Trade</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Crude Oil Production')">Crude Oil Production</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Current Account')">Current Account</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Current Account Services')">Current Acct Services</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Current Account to GDP')">Current Acct to GDP</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Exports')">Exports</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Exports by Category')">Exports by Category</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Exports by Country')">Exports by Country</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'External Debt')">External Debt</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Foreign Direct Investment')">FDI</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Foreign Treasury Holdings')">Foreign Treas Holdings</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Foreign Treasury Holdings - Belgium')">Treas. Hold Belgium</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Foreign Treasury Holdings - Canada')">Treas. Hold Canada</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Foreign Treasury Holdings - China')">Treas. Hold China</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Foreign Treasury Holdings - Japan')">Treas. Hold Japan</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Foreign Treasury Holdings - UK')">Treas. Hold UK</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Gold Reserves')">Gold Reserves</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Goods Exports')">Goods Exports</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Goods Imports')">Goods Imports</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Goods Trade Balance')">Goods Trade Balance</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Imports')">Imports</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Imports by Category')">Imports by Category</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Imports by Country')">Imports by Country</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Net Long-term TIC Flows')">TIC Flows</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Oil Exports')">Oil Exports</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Overall Net Capital Flows')">Net Capital Flows</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Terms of Trade')">Terms of Trade</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Terrorism Index')">Terrorism Index</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Tourism Revenues')">Tourism Revenues</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Tourist Arrivals')">Tourist Arrivals</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Weapons Sales')">Weapons Sales</button>
-                    <button class="edu-btn bg-teal" onclick="askAI('EDUKASI', 'Weekly Crude Oil Production')">Weekly Oil Prod</button>
-                </div>
-            </details>
-
-            <details>
-                <summary style="color: #ffd54f;">🏛️ Government</summary>
-                <div class="edu-grid">
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Asylum Applications')">Asylum Applications</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Corruption Index')">Corruption Index</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Corruption Rank')">Corruption Rank</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Credit Rating')">Credit Rating</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Fiscal Expenditure')">Fiscal Expenditure</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Government Budget')">Government Budget</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Government Debt')">Government Debt</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Government Debt to GDP')">Gov Debt to GDP</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Government Revenues')">Government Revenues</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Government Spending')">Government Spending</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Government Spending to GDP')">Gov Spending to GDP</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Holidays')">Holidays</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Military Expenditure')">Military Exp</button>
-                    <button class="edu-btn bg-yellow" onclick="askAI('EDUKASI', 'Monthly Budget Statement')">Monthly Budget Stmt</button>
-                </div>
-            </details>
-
-            <details>
-                <summary style="color: #a1887f;">🏭 Business</summary>
-                <div class="edu-grid">
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Average Equipment Rate')">Avg Equipment Rate</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Bankruptcies')">Bankruptcies</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Business Inventories MoM')">Business Inv MoM</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Capacity Utilization')">Capacity Utilization</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Car Loan Delinquency')">Car Loan Delinquency</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Car Production')">Car Production</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Car Registrations')">Car Registrations</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Changes in Inventories')">Changes Inventories</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Chicago Fed National Activity Index')">Chicago Fed Activity</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Chicago PMI')">Chicago PMI</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Coincident Index')">Coincident Index</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Composite Leading Indicator')">Composite Leading</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Corporate Profits')">Corporate Profits</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Dallas Fed Manufacturing Index')">Dallas Fed Mfg</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Dallas Fed Services Index')">Dallas Fed Services</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Dry-Van Rate')">Dry-Van Rate</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Durable Goods Orders MoM')">Durable Goods MoM</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Factory Orders ex Transportation')">Factory Orders ex Tr.</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Factory Orders MoM')">Factory Orders MoM</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Industrial Production MoM')">Ind. Production MoM</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Industrial Production YoY')">Ind. Production YoY</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'ISM Manufacturing PMI')">ISM Mfg PMI</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'ISM Services PMI')">ISM Services PMI</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Kansas Fed Manufacturing Index')">Kansas Fed Mfg</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Leading Economic Index')">Leading Economic Index</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'LMI Logistics Managers Index')">LMI Logistics Index</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Manufacturing Production MoM')">Mfg Production MoM</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Manufacturing Production YoY')">Mfg Production YoY</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Mining Production')">Mining Production</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'New Orders')">New Orders</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'NFIB Business Optimism Index')">NFIB Optimism</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Non Defense Goods Orders Ex Air')">Non Def Goods Ex Air</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'NY Empire State Manufacturing Index')">NY Empire State Mfg</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'NY Fed Services Activity Index')">NY Fed Services</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Philadelphia Fed Manufacturing Index')">Philly Fed Mfg</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Retail Inventories Ex Autos MoM')">Retail Inv Ex Autos</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Richmond Fed Manufacturing Index')">Richmond Fed Mfg</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Richmond Fed Services Index')">Richmond Fed Services</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Steel Production')">Steel Production</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Total Vehicle Sales')">Total Vehicle Sales</button>
-                    <button class="edu-btn bg-brown" onclick="askAI('EDUKASI', 'Wholesale Inventories MoM')">Wholesale Inv MoM</button>
-                </div>
-            </details>
-
-            <details>
-                <summary style="color: #ff8a65;">🛒 Consumer</summary>
-                <div class="edu-grid">
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Bank Lending Rate')">Bank Lending Rate</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Chain Store Sales')">Chain Store Sales</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Consumer Credit Change')">Consumer Credit Chg</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Consumer Spending')">Consumer Spending</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Credit Card Accounts')">Credit Card Accounts</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Debt Balance Auto Loans')">Debt Auto Loans</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Debt Balance Credit Cards')">Debt Credit Cards</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Debt Balance Mortgages')">Debt Mortgages</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Debt Balance Student Loans')">Debt Student Loans</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Disposable Personal Income')">Disposable Income</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Gasoline Prices')">Gasoline Prices</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Households Debt to GDP')">Households Debt/GDP</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Michigan Consumer Expectations')">Mich Consumer Exp</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Michigan Consumer Sentiment')">Mich Sentiment</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Michigan Current Conditions')">Mich Current Cond</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Personal Income MoM')">Personal Income MoM</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Personal Savings')">Personal Savings</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Personal Spending MoM')">Personal Spending MoM</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Private Sector Credit')">Private Sector Credit</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'RCM/TIPP Economic Optimism Index')">RCM/TIPP Optimism</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Real Personal Spending MoM')">Real Pers Spending MoM</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Redbook YoY')">Redbook YoY</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Monitor YoY')">Retail Monitor YoY</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Building and Garden Supply Stores MoM')">Retail Sales Garden</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Car Dealers MoM')">Retail Sales Car Deals</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Clothing Stores MoM')">Retail Sales Clothing</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Control Group MoM')">Retail Sales Control</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Electronics Stores MoM')">Retail Sales Electronics</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Ex Autos MoM')">Retail Sales Ex Autos</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Ex Gas MoM')">Retail Sales Ex Gas</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Ex Gas/Autos MoM')">Retail Sales Ex Gas/Auto</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Food and Beverage Stores MoM')">Retail Sales Food/Bev</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Furniture Stores MoM')">Retail Sales Furniture</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Gasoline Stations MoM')">Retail Sales Gasoline</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales General Merchandise Stores MoM')">Retail Sales Gen Mdse</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Health and Personal Care Stores MoM')">Retail Sales Health</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Miscellaneous Store Retailers MoM')">Retail Sales Misc</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales MoM')">Retail Sales MoM</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Online Trade MoM')">Retail Sales Online</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Restaurants and Bars MoM')">Retail Sales Rest/Bars</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales Sporting Goods and Hobby Stores MoM')">Retail Sales Sporting</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Retail Sales YoY')">Retail Sales YoY</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Total Household Debt')">Total Household Debt</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Used Car Prices MoM')">Used Car Prices MoM</button>
-                    <button class="edu-btn bg-orange" onclick="askAI('EDUKASI', 'Used Car Prices YoY')">Used Car Prices YoY</button>
-                </div>
-            </details>
-
-            <details>
-                <summary style="color: #aed581;">🏠 Housing</summary>
-                <div class="edu-grid">
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', '15-Year Mortgage Rate')">15-Yr Mortgage Rate</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', '30-Year Mortgage Rate')">30-Yr Mortgage Rate</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Average House Prices')">Avg House Prices</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Average Mortgage Size')">Avg Mortgage Size</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Building Permits')">Building Permits</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Building Permits MoM')">Building Permits MoM</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Case-Shiller Home Price Index')">Case-Shiller Index</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Case-Shiller Home Price Index MoM')">Case-Shiller MoM</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Case-Shiller Home Price Index YoY')">Case-Shiller YoY</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Case-Shiller Single Family Home Price Index')">Case-Shiller Single Fam</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Construction Spending MoM')">Construction Spending</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Existing Home Sales')">Existing Home Sales</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Existing Home Sales MoM')">Existing Home MoM</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Existing Home Sales Prices')">Existing Home Prices</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Home Ownership Rate')">Home Ownership Rate</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'House Price Index')">House Price Index</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'House Price Index MoM')">House Price MoM</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'House Price Index YoY')">House Price YoY</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Housing Starts')">Housing Starts</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Housing Starts MoM')">Housing Starts MoM</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Housing Starts Multi Family')">Housing Starts Multi</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Housing Starts Single Family')">Housing Starts Single</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'MBA 30-Year Mortgage Rate')">MBA 30-Yr Mortgage</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'MBA Mortgage Applications')">MBA Mortg Applications</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'MBA Mortgage Market Index')">MBA Mortgage Market</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'MBA Mortgage Refinance Index')">MBA Mortg Refinance</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'MBA Purchase Index')">MBA Purchase Index</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Mortgage Originations')">Mortgage Originations</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'NAHB Housing Market Index')">NAHB Housing Market</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'New Home Sales')">New Home Sales</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'New Home Sales MoM')">New Home Sales MoM</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Pending Home Sales MoM')">Pending Home Sales MoM</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Pending Home Sales YoY')">Pending Home Sales YoY</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Price to Rent Ratio')">Price to Rent Ratio</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Residential Property Prices')">Residential Prop Prices</button>
-                    <button class="edu-btn bg-green" onclick="askAI('EDUKASI', 'Total Housing Inventory')">Total Housing Inventory</button>
-                </div>
-            </details>
-
-            <details>
-                <summary style="color: #f06292;">🧾 Taxes</summary>
-                <div class="edu-grid">
-                    <button class="edu-btn bg-pink" onclick="askAI('EDUKASI', 'Corporate Tax Rate')">Corporate Tax Rate</button>
-                    <button class="edu-btn bg-pink" onclick="askAI('EDUKASI', 'Personal Income Tax Rate')">Personal Income Tax</button>
-                    <button class="edu-btn bg-pink" onclick="askAI('EDUKASI', 'Sales Tax Rate')">Sales Tax Rate</button>
-                    <button class="edu-btn bg-pink" onclick="askAI('EDUKASI', 'Social Security Rate')">Social Security Rate</button>
-                    <button class="edu-btn bg-pink" onclick="askAI('EDUKASI', 'Social Security Rate For Companies')">SS Rate Companies</button>
-                    <button class="edu-btn bg-pink" onclick="askAI('EDUKASI', 'Social Security Rate For Employees')">SS Rate Employees</button>
-                    <button class="edu-btn bg-pink" onclick="askAI('EDUKASI', 'Withholding Tax Rate')">Withholding Tax Rate</button>
-                </div>
-            </details>
-
-            <details>
-                <summary style="color: #90a4ae;">⚡ Energy</summary>
-                <div class="edu-grid">
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'API Crude Oil Stock Change')">API Crude Oil Stock</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'API Cushing Number')">API Cushing Number</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'API Distillate Stocks')">API Distillate Stocks</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'API Gasoline Stocks')">API Gasoline Stocks</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'Baker Hughes Oil Rig Count')">Baker Hughes Oil Rig</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'Baker Hughes Total Rigs Count')">Baker Hughes Total Rigs</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Crude Oil Imports Change')">EIA Crude Oil Imports</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Crude Oil Stocks Change')">EIA Crude Oil Stocks</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Cushing Crude Oil Stocks Change')">EIA Cushing Crude</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Distillate Fuel Production Change')">EIA Distillate Fuel Prod</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Distillate Stocks Change')">EIA Distillate Stocks</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Gasoline Production Change')">EIA Gasoline Prod</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Gasoline Stocks Change')">EIA Gasoline Stocks</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Heating Oil Stocks Change')">EIA Heating Oil Stocks</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Natural Gas Stocks Change')">EIA Natural Gas Stocks</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Refinery Crude Runs Change')">EIA Refinery Crude Runs</button>
-                    <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'Strategic Petroleum Reserve Crude Oil Stocks')">Strategic Petroleum</button>
                 </div>
             </details>
         </div>
@@ -660,16 +452,12 @@
                 <button class="edu-btn bg-orange" onclick="askAI('COMBO_NEWS', 'Paket ISM PMI (Manufacturing & Jasa)')">Paket ISM PMI</button>
                 <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'Paket PPI (Core PPI & PPI)')">Paket PPI</button>
                 <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'Paket JOLTS (Job Openings & Quits)')">Paket JOLTS</button>
-                <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'Advance GDP q/q + Initial Jobless Claims (Sering rilis bersamaan di hari Kamis)')">GDP + Jobless Claims</button>
-                <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'Michigan Consumer Sentiment + Inflation Expectations')">Michigan Sentiment + Inflasi</button>
             </div>
 
             <h4 style="color: #2962ff;">🌍 Combo Central Bank Global</h4>
             <div class="edu-grid">
                 <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'BOE Official Bank Rate + Monetary Policy Summary + MPC Votes')">Bank of England (BOE)</button>
                 <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'ECB Main Refinancing Rate + Monetary Policy Statement')">ECB (Eropa)</button>
-                <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'RBA Cash Rate + RBA Rate Statement')">RBA (Australia)</button>
-                <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'BOC Rate Statement + Overnight Rate')">BOC (Kanada)</button>
                 <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'BOJ Policy Rate + Monetary Policy Statement')">BOJ (Jepang)</button>
             </div>
         </div>
@@ -693,13 +481,7 @@
             { q: "Indikator fundamental manakah yang paling menggerakkan pasar setiap hari Jumat minggu pertama?", opts: ["CPI", "NFP", "Retail Sales", "GDP"], ans: 1 },
             { q: "Apa yang dimaksud dengan 'Dovish' dalam kebijakan moneter?", opts: ["Cenderung menaikkan suku bunga", "Cenderung menurunkan suku bunga", "Menjaga suku bunga tetap", "Menghapus suku bunga"], ans: 1 },
             { q: "Ketika tingkat pengangguran (Unemployment Rate) naik tak terduga, biasanya US Dollar akan?", opts: ["Melemah", "Menguat", "Tidak Bergerak", "Meroket"], ans: 0 },
-            { q: "Apa aset 'Safe Haven' yang paling sering dicari saat terjadi perang atau krisis?", opts: ["Bitcoin", "Saham Tech", "Emas (Gold)", "Minyak Mentah"], ans: 2 },
-            { q: "Kondisi 'Risk-Off' di pasar menandakan bahwa investor sedang merasa...", opts: ["Optimis & Rakus", "Takut & Mencari Aman", "Bosan", "Ingin spekulasi tinggi"], ans: 1 },
-            { q: "Jika Retail Sales rilis hijau (lebih tinggi dari forecast), maka Gold biasanya merespons dengan...", opts: ["Naik perlahan", "Turun (Bearish)", "Naik drastis (Bullish)", "Sideways"], ans: 1 },
-            { q: "Apa itu likuiditas dalam trading SMC?", opts: ["Jumlah uang di bank", "Area tempat stop loss retail berkumpul", "Kecepatan internet", "Indikator RSI overbought"], ans: 1 },
-            { q: "Data GDP yang bertumbuh pesat mengindikasikan ekonomi negara tersebut sedang...", opts: ["Resesi", "Ekspansi / Kuat", "Stagnan", "Krisis"], ans: 1 },
-            { q: "Kapan waktu rilis berita FOMC yang paling sering membuat market 'whipsaw' (naik turun liar)?", opts: ["Saat sesi Asia", "Saat Press Conference Ketua The Fed", "Saat pembukaan pasar Eropa", "Hari Minggu pagi"], ans: 1 },
-            { q: "Korelasi antara Yield Obligasi AS (US Treasury) dan Harga Emas biasanya berbanding...", opts: ["Lurus (Searah)", "Terbalik (Berlawanan)", "Tidak ada hubungan", "Sama persis"], ans: 1 }
+            { q: "Apa aset 'Safe Haven' yang paling sering dicari saat terjadi perang atau krisis?", opts: ["Bitcoin", "Saham Tech", "Emas (Gold)", "Minyak Mentah"], ans: 2 }
         ];
 
         function initQuiz() {
@@ -803,7 +585,6 @@
             journalData.unshift({ pair, type, pnl: parseFloat(pnl).toFixed(2), note, date: new Date().toISOString() });
             localStorage.setItem('tradingJournal', JSON.stringify(journalData));
             
-            // Clear input
             document.getElementById('j-pair').value = "";
             document.getElementById('j-pnl').value = "";
             document.getElementById('j-note').value = "";
@@ -814,7 +595,6 @@
 
         renderJournal();
 
-        // TABS NAVIGATOR
         function showTab(t, elem) {
             document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -824,11 +604,12 @@
         }
 
         // ==========================================
-        // SISTEM PERPUSTAKAAN AI TERSIMPAN
+        // SISTEM PERPUSTAKAAN AI & ROASTING ANAK TK
         // ==========================================
         let aiLibraryData = JSON.parse(localStorage.getItem('aiLibrary')) || [];
         let currentAiTitle = "";
         let currentAiContent = "";
+        let lastAskedTopicContext = ""; // Untuk fitur Belum Paham
 
         function renderLibrary() {
             let list = document.getElementById('library-list');
@@ -879,14 +660,11 @@
             modal.style.display = 'flex';
             content.innerHTML = item.content;
             document.getElementById('btn-save-ai').style.display = 'none';
+            document.getElementById('btn-belum-paham').style.display = 'none'; // Sembunyikan saat lihat riwayat
         }
 
         renderLibrary();
 
-
-        // ==========================================
-        // SISTEM OTAK AI TERPUSAT DI DALAM MINI APP
-        // ==========================================
         function parseMD(text) {
             return text
                 .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
@@ -898,10 +676,12 @@
             const modal = document.getElementById('ai-modal');
             const content = document.getElementById('ai-content');
             const btnSave = document.getElementById('btn-save-ai');
+            const btnBelumPaham = document.getElementById('btn-belum-paham');
             
             currentAiTitle = titleText || "Penjelasan AI";
             currentAiContent = "";
             btnSave.style.display = 'none';
+            btnBelumPaham.style.display = 'none';
 
             modal.style.display = 'flex';
             content.innerHTML = "<i>Menganalisis skenario market... Mohon tunggu ⏳</i>";
@@ -924,6 +704,7 @@
                     currentAiContent = parseMD(data.choices[0].message.content);
                     content.innerHTML = currentAiContent;
                     btnSave.style.display = 'block';
+                    btnBelumPaham.style.display = 'block'; // Tampilkan tombol belum paham
                     Telegram.WebApp.HapticFeedback.notificationOccurred('success');
                 } else {
                     content.innerHTML = "⚠️ Terjadi kesalahan atau batas limit API tercapai.";
@@ -941,17 +722,28 @@
 
             let prompt = "";
             let titleContext = value;
+            lastAskedTopicContext = value; // Simpan untuk fitur belum paham
 
-            if (actionType === 'EDUKASI') {
-                prompt = `[INSTRUKSI MUTLAK]: Jawab dalam Bahasa Indonesia. Dilarang pakai tag HTML. Anda adalah Mentor Institusi Hedge Fund. Jelaskan indikator '${value}': \n1. Definisi singkat \n2. Analogi kehidupan sehari-hari (penting!) \n3. Dampak ke Emas (XAUUSD) & USD \n4. Rumus trading (Jika Rilis Data Tinggi = Emas ke mana?)`;
+            if (actionType === 'EBOOK') {
+                prompt = `[INSTRUKSI MUTLAK]: Anda adalah Mentor Trading Profesional. Jelaskan materi E-Book: '${value}'. Berikan penjelasan yang terstruktur, mudah dipahami, berikan analogi/contoh, dan cara aplikasinya dalam trading. Jawab dalam Bahasa Indonesia. Gunakan formatting tebal/miring yang rapi.`;
+            } else if (actionType === 'EDUKASI') {
+                prompt = `[INSTRUKSI MUTLAK]: Jawab dalam Bahasa Indonesia. Dilarang pakai tag HTML. Anda adalah Mentor Institusi Hedge Fund. Jelaskan indikator '${value}': \n1. Definisi singkat \n2. Analogi kehidupan sehari-hari \n3. Dampak ke Emas (XAUUSD) & USD \n4. Rumus trading.`;
             } else if (actionType === 'COMBO_NEWS') {
-                prompt = `[INSTRUKSI MUTLAK]: Jawab Bahasa Indonesia. Dilarang pakai tag HTML. Jelaskan skenario rilis berita ganda '${value}': \n1. Hierarki Prioritas Bank Besar (Bank fokus lihat data yang mana?) \n2. Skenario jika data bersinergi (semua searah) \n3. Skenario jika data divergen / whipsaw.`;
+                prompt = `[INSTRUKSI MUTLAK]: Jawab Bahasa Indonesia. Dilarang pakai tag HTML. Jelaskan skenario rilis berita ganda '${value}': \n1. Hierarki Prioritas Bank Besar \n2. Skenario jika data bersinergi \n3. Skenario jika data divergen.`;
             } else if (actionType === 'FREE_CHAT') {
-                prompt = `[INSTRUKSI MUTLAK]: Anda adalah AI Trading Assistant (Ahli Makroekonomi). Jawablah dalam Bahasa Indonesia yang santai tapi profesional. Pertanyaan: "${value}". Berikan jawaban yang bernas, dan sertakan analogi yang mudah dipahami.`;
+                prompt = `[INSTRUKSI MUTLAK]: Anda adalah AI Trading Assistant (Ahli Makroekonomi). Jawablah dalam Bahasa Indonesia yang santai tapi profesional. Pertanyaan: "${value}".`;
             } else if (actionType === 'FUNDAMENTAL') {
-                prompt = `[INSTRUKSI MUTLAK]: Anda Analis Berita Institusional. Kejadian: "${value}". Tugas Anda: \n1. Sentimen pasar (Risk-on/off)? \n2. Dampak USD? \n3. Dampak XAUUSD? \n4. Rekomendasi posisi (Buy/Sell/Wait) dengan alasan.`;
+                prompt = `[INSTRUKSI MUTLAK]: Anda Analis Berita Institusional. Kejadian: "${value}". Tugas Anda: \n1. Sentimen pasar? \n2. Dampak USD? \n3. Dampak XAUUSD? \n4. Rekomendasi posisi dengan alasan.`;
+            } else if (actionType === 'ROASTING_TK') {
+                prompt = `[INSTRUKSI MUTLAK]: Pengguna menekan tombol 'Belum Paham' karena dia lambat mengerti tentang '${value}'. Jelaskan ulang konsep ini SEPERTI MENJELASKAN KEPADA ANAK TK (gunakan analogi mainan, permen, atau hal super sepele). WAJIB tambahkan sedikit ROASTINGAN/sindiran lucu di awal karena dia lama pahamnya. Gunakan bahasa Indonesia gaul/santai.`;
             }
             fetchAI(prompt, titleContext);
+        }
+
+        // FUNGSI KHUSUS TOMBOL "BELUM PAHAM"
+        function explainLikeTK() {
+            if(!lastAskedTopicContext) return;
+            askAI('ROASTING_TK', lastAskedTopicContext);
         }
 
         function processNews(tipe) {
@@ -964,11 +756,12 @@
             
             let prompt = "";
             let titleContext = tipe === 'TRANSLATE' ? `Terjemahan: ${n}` : `Analisis: ${n}`;
+            lastAskedTopicContext = n; // Bisa di-roasting juga
 
             if(tipe === 'TRANSLATE') {
                 prompt = `Terjemahkan penjelasan kalender finansial berikut secara akurat ke Bahasa Indonesia:\n\n${n}`;
             } else {
-                prompt = `[INSTRUKSI MUTLAK]: Jawab Bahasa Indonesia. Teks Berita: ${n}. \nData Rilis -> Aktual: ${act} | Prev: ${prev} | Fore: ${fore}. \nJelaskan: 1. Makna ringkasnya. 2. Analogi sederhana. 3. Dampaknya ke Emas (XAUUSD) & USD berdasarkan selisih Aktual vs Fore.`;
+                prompt = `[INSTRUKSI MUTLAK]: Jawab Bahasa Indonesia. Teks Berita: ${n}. \nData Rilis -> Aktual: ${act} | Prev: ${prev} | Fore: ${fore}. \nJelaskan: 1. Makna ringkasnya. 2. Analogi sederhana. 3. Dampaknya ke Emas (XAUUSD) & USD.`;
             }
             fetchAI(prompt, titleContext);
         }

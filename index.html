@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://s3.tradingview.com/tv.js"></script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #0b0e14; color: #fff; margin: 0; padding: 10px; transition: background-color 0.8s ease; }
         .tabs { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; }
@@ -80,7 +81,7 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('main', this)">📊 Backtest</button>
+        <button class="tab-btn active" onclick="showTab('main', this)">📈 Trade / Backtest</button>
         <button class="tab-btn" onclick="showTab('news', this)">📅 Kalender</button>
         <button class="tab-btn" onclick="showTab('edu', this)">📚 Edukasi & AI</button>
         <button class="tab-btn" onclick="showTab('combo', this)">🔄 Combo</button>
@@ -88,30 +89,33 @@
 
     <div id="main" class="content active">
         <div style="background: #17212b; padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-            <h4 style="color:#089981; margin:0;">🛠️ StrategyTune</h4>
-            <div id="total-pnl" style="font-size: 13px; font-weight: bold; background: #0b0e14; padding: 5px 10px; border-radius: 5px; color: #fff;">PnL: $0.00</div>
+            <div style="font-size: 12px; color: #aaa;" id="status-text">Menunggu Market...</div>
+            <div id="live-price" style="font-size: 20px; font-weight: bold; color: #fff;">Memuat Data...</div>
+            <div id="pnl-display" style="font-size: 13px; font-weight: bold; background: #0b0e14; padding: 5px 10px; border-radius: 5px; color: #fff;">Floating: $0.00</div>
         </div>
         
-        <iframe src="https://strategytune.com/app" style="width: 100%; height: 50vh; border: none; border-radius: 8px; background: #131722; margin-bottom: 10px;"></iframe>
+        <div id="tv-chart" style="height:60vh; width:100%; border-radius:8px; margin-bottom:10px; border:1px solid #363c4e;"></div>
 
-        <details>
-            <summary style="color: #2962ff;">📝 Buka Jurnal & Catat Trade</summary>
+        <select id="pair" onchange="changePair()">
+            <option value="PAXGUSDT">XAUUSD (Gold Proxy)</option>
+            <option value="BTCUSDT">BTCUSDT (Bitcoin)</option>
+            <option value="EURUSDT">EURUSD (Euro Proxy)</option>
+        </select>
+        
+        <div class="trade-row">
+            <input type="number" id="lot" placeholder="Lot (Cth: 0.1)" step="0.01" value="0.1">
+        </div>
+        <div class="trade-row">
+            <button class="action-btn buy" onclick="execTrade('BUY')">BUY</button>
+            <button class="action-btn sell" onclick="execTrade('SELL')">SELL</button>
+        </div>
+        <button class="action-btn" onclick="execClose()" style="background:#ffa000; color:black; margin-top:10px;">🔴 TUTUP POSISI & SIMPAN KE JURNAL</button>
+
+        <details style="margin-top:15px;" open>
+            <summary style="color: #2962ff;">📝 Jurnal Trading Otomatis</summary>
             <div style="margin-top: 10px;">
-                <div class="trade-row">
-                    <input type="text" id="j-pair" placeholder="Pair (Cth: XAUUSD)" style="font-size: 12px; padding: 8px;">
-                    <select id="j-type" style="font-size: 12px; padding: 8px;">
-                        <option value="BUY">BUY</option>
-                        <option value="SELL">SELL</option>
-                    </select>
-                </div>
-                <div class="trade-row">
-                    <input type="number" id="j-pnl" placeholder="PnL Hasil ($)" step="0.01" style="font-size: 12px; padding: 8px;">
-                    <input type="text" id="j-note" placeholder="Catatan/Alasan (Opsional)" style="font-size: 12px; padding: 8px;">
-                </div>
-                <button class="action-btn buy" style="padding: 10px; font-size: 12px;" onclick="addJournalEntry()">➕ SIMPAN KE JURNAL</button>
-                
-                <div id="journal-list" style="margin-top: 10px; max-height: 160px; overflow-y: auto; font-size: 11px;">
-                    </div>
+                <div id="total-pnl" style="font-size: 15px; font-weight: bold; text-align:center; background: #0b0e14; padding: 10px; border-radius: 5px; color: #fff; margin-bottom:10px;">Total PnL: $0.00</div>
+                <div id="journal-list" style="margin-top: 10px; max-height: 200px; overflow-y: auto; font-size: 11px;"></div>
                 <button class="action-btn sell" style="margin-top: 10px; padding: 8px; font-size: 11px;" onclick="clearJournal()">🗑️ HAPUS SEMUA JURNAL</button>
             </div>
         </details>
@@ -153,7 +157,7 @@
         </div>
 
         <div style="background: #17212b; padding: 15px; border-radius: 8px;">
-            <p style="font-size:12px; color:#aaa; margin-top:0;">Klik indikator di bawah untuk mendapat penjelasan lengkap AI.</p>
+            <p style="font-size:12px; color:#aaa; margin-top:0;">Ensiklopedia Lengkap Indikator Ekonomi USD (Klik untuk penjelasan AI).</p>
             <button class="action-btn blue" style="margin-bottom: 10px;" onclick="askAI('EDUKASI', 'Cara Membaca Data Fundamental (Actual vs Forecast) dan 15 News Paling Ditunggu Trader')">📖 ATURAN MEMBACA DATA & TOP 15 NEWS</button>
 
             <details>
@@ -583,14 +587,22 @@
             
             <h4 style="color: #ffb300;">🟡 Combo Tinggi & Menengah</h4>
             <div class="edu-grid">
-                <button class="edu-btn bg-orange" onclick="askAI('COMBO_NEWS', 'Paket GDP (GDP & Price Index)')">Paket GDP</button>
+                <button class="edu-btn bg-orange" onclick="askAI('COMBO_NEWS', 'Paket GDP (Advance GDP & Price Index)')">Paket GDP</button>
                 <button class="edu-btn bg-orange" onclick="askAI('COMBO_NEWS', 'Paket Retail Sales (Core & Reguler)')">Paket Retail Sales</button>
                 <button class="edu-btn bg-orange" onclick="askAI('COMBO_NEWS', 'Paket ISM PMI (Manufacturing & Jasa)')">Paket ISM PMI</button>
                 <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'Paket PPI (Core PPI & PPI)')">Paket PPI</button>
                 <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'Paket JOLTS (Job Openings & Quits)')">Paket JOLTS</button>
                 <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'Advance GDP q/q + Initial Jobless Claims (Sering rilis bersamaan di hari Kamis)')">GDP + Jobless Claims</button>
-                <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'BOE Official Bank Rate + Monetary Policy Summary + MPC Votes')">Bank of England (BOE)</button>
-                <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'ECB Main Refinancing Rate + Monetary Policy Statement')">ECB Combo (Eropa)</button>
+                <button class="edu-btn bg-purple" onclick="askAI('COMBO_NEWS', 'Michigan Consumer Sentiment + Inflation Expectations')">Michigan Sentiment + Inflasi</button>
+            </div>
+
+            <h4 style="color: #2962ff;">🌍 Combo Central Bank Global</h4>
+            <div class="edu-grid">
+                <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'BOE Official Bank Rate + Monetary Policy Summary + MPC Votes')">Bank of England (BOE)</button>
+                <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'ECB Main Refinancing Rate + Monetary Policy Statement')">ECB (Eropa)</button>
+                <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'RBA Cash Rate + RBA Rate Statement')">RBA (Australia)</button>
+                <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'BOC Rate Statement + Overnight Rate')">BOC (Kanada)</button>
+                <button class="edu-btn bg-blue" onclick="askAI('COMBO_NEWS', 'BOJ Policy Rate + Monetary Policy Statement')">BOJ (Jepang)</button>
             </div>
         </div>
     </div>
@@ -603,7 +615,7 @@
         // KUNCI API GROQ
         const GROQ_API = "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";
 
-        // DATA KUIS
+        // DATA KUIS (DIAMBIL DARI LIST ANDA SEBELUMNYA)
         const quizData = [
             { q: "Jika Data Inflasi (CPI) AS meroket tajam dari perkiraan, apa yang biasa The Fed lakukan?", opts: ["Menurunkan Suku Bunga", "Menaikkan Suku Bunga", "Membeli Obligasi", "Mencetak Uang"], ans: 1 },
             { q: "Data NFP rilis JAUH lebih rendah (buruk) dari perkiraan. Apa dampak umumnya ke Gold (XAUUSD)?", opts: ["Gold Terjun Bebas", "Gold Akan Naik (Bullish)", "Gold Sideways", "Tidak Ada Efek"], ans: 1 },
@@ -642,7 +654,7 @@
 
         function checkAnswer(selected, correct) {
             document.getElementById("quiz-overlay").style.display = "none";
-            // Latar belakang permanen
+            // Latar belakang permanen dengan animasi hujan sesuai perintah Anda
             if(selected === correct) {
                 document.body.style.backgroundColor = "#0d47a1"; 
                 Telegram.WebApp.HapticFeedback.notificationOccurred('success');
@@ -671,8 +683,9 @@
         initQuiz();
 
         // ==========================================
-        // SISTEM JURNAL TRADING & PNL TRACKER
+        // SISTEM TRADING, PNL, DAN JURNAL OTOMATIS
         // ==========================================
+        let ws; let currentPrice = 0; let currentPosition = ''; let entryPrice = 0; let activeLot = 0;
         let journalData = JSON.parse(localStorage.getItem('tradingJournal')) || [];
 
         function renderJournal() {
@@ -682,7 +695,7 @@
             let total = 0;
             
             if(journalData.length === 0) {
-                list.innerHTML = "<div style='text-align:center; color:#aaa; padding:10px;'>Jurnal masih kosong. Yuk catat trade pertama!</div>";
+                list.innerHTML = "<div style='text-align:center; color:#aaa; padding:10px;'>Jurnal masih kosong. Trade di atas akan otomatis tersimpan di sini!</div>";
             } else {
                 journalData.forEach((entry) => {
                     total += parseFloat(entry.pnl);
@@ -695,32 +708,8 @@
                         </div>`;
                 });
             }
-            
-            totalPnLDisplay.innerText = `PnL: $${total.toFixed(2)}`;
+            totalPnLDisplay.innerText = `Total PnL: $${total.toFixed(2)}`;
             totalPnLDisplay.style.color = total >= 0 ? '#089981' : '#f23645';
-        }
-
-        function addJournalEntry() {
-            let pair = document.getElementById('j-pair').value.toUpperCase();
-            let type = document.getElementById('j-type').value;
-            let pnl = document.getElementById('j-pnl').value;
-            let note = document.getElementById('j-note').value || "-";
-            
-            if(!pair || !pnl) {
-                Telegram.WebApp.showAlert("Pair dan PnL wajib diisi!");
-                return;
-            }
-            
-            journalData.unshift({ pair, type, pnl: parseFloat(pnl).toFixed(2), note, date: new Date().toISOString() });
-            localStorage.setItem('tradingJournal', JSON.stringify(journalData));
-            
-            // Clear input
-            document.getElementById('j-pair').value = "";
-            document.getElementById('j-pnl').value = "";
-            document.getElementById('j-note').value = "";
-            
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
-            renderJournal();
         }
 
         function clearJournal() {
@@ -734,8 +723,86 @@
             });
         }
         
-        // Panggil jurnal saat web dimuat
+        function saveState() {
+            localStorage.setItem('tradeData', JSON.stringify({ pos: currentPosition, price: entryPrice, lot: activeLot, pair: document.getElementById("pair").value }));
+        }
+
+        function loadState() {
+            let data = localStorage.getItem('tradeData');
+            if (data) {
+                let state = JSON.parse(data);
+                if (state.pos !== '') {
+                    currentPosition = state.pos; entryPrice = state.price; activeLot = state.lot;
+                    document.getElementById("pair").value = state.pair; 
+                    document.getElementById('status-text').innerText = `POSISI AKTIF: ${currentPosition} @ ${entryPrice}`;
+                    document.getElementById('status-text').style.color = '#089981';
+                }
+            }
+        }
+
+        function connectWS(symbol) {
+            if(ws) ws.close();
+            ws = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@trade`);
+            ws.onmessage = (event) => {
+                currentPrice = parseFloat(JSON.parse(event.data).p);
+                document.getElementById('live-price').innerText = currentPrice.toFixed(2); calculatePnL();
+            };
+        }
+
+        function calculatePnL() {
+            let pnlDisplay = document.getElementById('pnl-display');
+            if(currentPosition === '') { pnlDisplay.innerText = `Floating: $0.00`; pnlDisplay.style.color = '#fff'; return; }
+            let diff = (currentPosition === 'BUY') ? (currentPrice - entryPrice) : (entryPrice - currentPrice);
+            let pnl = diff * activeLot * (document.getElementById("pair").value === 'BTCUSDT' ? 1 : 100);
+            pnlDisplay.innerText = `Floating: $${pnl.toFixed(2)}`;
+            pnlDisplay.style.color = pnl >= 0 ? '#089981' : '#f23645';
+        }
+
+        function changePair() {
+            let pair = document.getElementById("pair").value; connectWS(pair);
+            document.getElementById("tv-chart").innerHTML = "";
+            new TradingView.widget({ "container_id": "tv-chart", "symbol": "BINANCE:" + pair, "theme": "dark", "autosize": true, "interval": "15" });
+        }
+
+        function execTrade(type) {
+            if(currentPosition !== '') { Telegram.WebApp.showAlert("Tutup posisi aktif dulu."); return; }
+            if(currentPrice === 0) { Telegram.WebApp.showAlert("Menunggu harga..."); return; }
+            currentPosition = type; entryPrice = currentPrice; activeLot = parseFloat(document.getElementById("lot").value) || 0.01;
+            document.getElementById('status-text').innerText = `POSISI AKTIF: ${type} @ ${entryPrice}`;
+            document.getElementById('status-text').style.color = '#089981'; saveState(); Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        }
+
+        // FUNGSI INI SEKARANG OTOMATIS MENYIMPAN KE JURNAL
+        function execClose() {
+            if(currentPosition === '') return;
+            let diff = (currentPosition === 'BUY') ? (currentPrice - entryPrice) : (entryPrice - currentPrice);
+            let finalPnL = diff * activeLot * (document.getElementById("pair").value === 'BTCUSDT' ? 1 : 100);
+            
+            // SIMPAN KE JURNAL SECARA OTOMATIS
+            let pairName = document.getElementById("pair").value;
+            journalData.unshift({ 
+                pair: pairName, 
+                type: currentPosition, 
+                pnl: parseFloat(finalPnL).toFixed(2), 
+                note: `Auto Close @ ${currentPrice.toFixed(2)}`, 
+                date: new Date().toISOString() 
+            });
+            localStorage.setItem('tradingJournal', JSON.stringify(journalData));
+            renderJournal(); // Langsung perbarui UI jurnal
+            Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+
+            // Kirim notifikasi ke Bot Telegram
+            Telegram.WebApp.sendData(JSON.stringify({ action: 'CLOSE_TRADE', pair: pairName, type: currentPosition, pnl: finalPnL.toFixed(2) }));
+            
+            // Reset state
+            currentPosition = ''; localStorage.removeItem('tradeData');
+            document.getElementById('status-text').innerText = `Menunggu Market...`; 
+            document.getElementById('status-text').style.color = '#aaa';
+        }
+
         renderJournal();
+        loadState(); 
+        changePair();
 
         // TABS NAVIGATOR
         function showTab(t, elem) {

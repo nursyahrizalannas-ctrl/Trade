@@ -86,7 +86,6 @@
         <button class="tab-btn" onclick="showTab('combo', this)">🔄 Combo</button>
     </div>
 
-    <!-- TAB 1: TRADE / BACKTEST (CHART STRATEGYTUNE DIPERLEBAR AGAR TIDAK TERPOTONG) -->
     <div id="main" class="content active">
         <div style="background: #17212b; padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
             <div style="font-size: 12px; color: #aaa;" id="status-text">Menunggu Market...</div>
@@ -94,8 +93,9 @@
             <div id="pnl-display" style="font-size: 13px; font-weight: bold; background: #0b0e14; padding: 5px 10px; border-radius: 5px; color: #fff;">Floating: $0.00</div>
         </div>
         
-        <!-- UKURAN IFRAME DIPERLEBAR (height 85vh dan min-height 750px) AGAR FITUR BAWAH STRATEGYTUNE TIDAK TERPOTONG -->
-        <iframe src="https://strategytune.com/app" style="width: 100%; height: 85vh; min-height: 750px; border: none; border-radius: 8px; background: #131722; margin-bottom: 10px;"></iframe>
+        <div style="width: 100%; height: 75vh; overflow-y: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; margin-bottom: 10px; border: 1px solid #363c4e; background: #131722;">
+            <iframe src="https://strategytune.com/app" style="width: 100%; height: 1500px; border: none; display: block;" scrolling="yes"></iframe>
+        </div>
 
         <select id="pair" onchange="changePair()">
             <option value="PAXGUSDT">XAUUSD (Gold Proxy)</option>
@@ -123,7 +123,6 @@
         </details>
     </div>
 
-    <!-- TAB 2: KALENDER -->
     <div id="news" class="content">
         <div style="background: #17212b; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
             <h4 style="color:#2962ff;">🤖 Filter Kalender AI</h4>
@@ -148,7 +147,6 @@
         </div>
     </div>
 
-    <!-- TAB 3: EDUKASI (100% LENGKAP TANPA ADA YANG DIHILANGKAN) -->
     <div id="edu" class="content">
         <div style="background: #17212b; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #363c4e;">
             <h4 style="color:#089981;">💡 Diskusi & Tanya Bebas AI</h4>
@@ -164,7 +162,6 @@
             <p style="font-size:12px; color:#aaa; margin-top:0;">Ensiklopedia Lengkap Indikator Ekonomi USD (Klik untuk penjelasan AI).</p>
             <button class="action-btn blue" style="margin-bottom: 10px;" onclick="askAI('EDUKASI', 'Cara Membaca Data Fundamental (Actual vs Forecast) dan 15 News Paling Ditunggu Trader')">📖 ATURAN MEMBACA DATA & TOP 15 NEWS</button>
 
-            <!-- 1. MARKETS -->
             <details>
                 <summary style="color: #64b5f6;">🌍 Markets</summary>
                 <div class="edu-grid">
@@ -174,7 +171,6 @@
                 </div>
             </details>
 
-            <!-- 2. GDP -->
             <details>
                 <summary style="color: #81c784;">📊 GDP (Gross Domestic Product)</summary>
                 <div class="edu-grid">
@@ -206,7 +202,6 @@
                 </div>
             </details>
 
-            <!-- 3. LABOUR -->
             <details>
                 <summary style="color: #ffb74d;">👷 Labour & Employment</summary>
                 <div class="edu-grid">
@@ -267,7 +262,6 @@
                 </div>
             </details>
 
-            <!-- 4. PRICES -->
             <details>
                 <summary style="color: #e57373;">🏷️ Prices & Inflation</summary>
                 <div class="edu-grid">
@@ -323,7 +317,6 @@
                 </div>
             </details>
 
-            <!-- 5. MONEY -->
             <details>
                 <summary style="color: #ce93d8;">💱 Money & Banking</summary>
                 <div class="edu-grid">
@@ -344,7 +337,6 @@
                 </div>
             </details>
 
-            <!-- 6. TRADE -->
             <details>
                 <summary style="color: #4db6ac;">🚢 Trade</summary>
                 <div class="edu-grid">
@@ -384,7 +376,6 @@
                 </div>
             </details>
 
-            <!-- 7. GOVERNMENT -->
             <details>
                 <summary style="color: #ffd54f;">🏛️ Government</summary>
                 <div class="edu-grid">
@@ -405,7 +396,6 @@
                 </div>
             </details>
 
-            <!-- 8. BUSINESS -->
             <details>
                 <summary style="color: #a1887f;">🏭 Business</summary>
                 <div class="edu-grid">
@@ -453,7 +443,6 @@
                 </div>
             </details>
 
-            <!-- 9. CONSUMER -->
             <details>
                 <summary style="color: #ff8a65;">🛒 Consumer</summary>
                 <div class="edu-grid">
@@ -505,7 +494,6 @@
                 </div>
             </details>
 
-            <!-- 10. HOUSING -->
             <details>
                 <summary style="color: #aed581;">🏠 Housing</summary>
                 <div class="edu-grid">
@@ -548,7 +536,6 @@
                 </div>
             </details>
 
-            <!-- 11. TAXES -->
             <details>
                 <summary style="color: #f06292;">🧾 Taxes</summary>
                 <div class="edu-grid">
@@ -562,7 +549,6 @@
                 </div>
             </details>
 
-            <!-- 12. ENERGY -->
             <details>
                 <summary style="color: #90a4ae;">⚡ Energy</summary>
                 <div class="edu-grid">
@@ -588,7 +574,6 @@
         </div>
     </div>
 
-    <!-- TAB 4: COMBO NEWS -->
     <div id="combo" class="content">
         <div style="background: #17212b; padding: 15px; border-radius: 8px;">
             <p style="font-size:12px; color:#aaa; margin-top:0;">Analisis Rilis Ganda beserta prioritas datanya (Institusional Logic) & Waktu yang sering bentrok bersamaan.</p>

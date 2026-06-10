@@ -56,9 +56,9 @@
         .ai-body { flex: 1; line-height: 1.6; font-size: 14px; margin-bottom: 20px; color: #e0e0e0; }
         .ai-body b { color: #2962ff; }
         
-        /* SCROLLBAR JURNAL CUSTOM */
-        #journal-list::-webkit-scrollbar { width: 4px; }
-        #journal-list::-webkit-scrollbar-thumb { background: #363c4e; border-radius: 4px; }
+        /* SCROLLBAR JURNAL & PERPUSTAKAAN CUSTOM */
+        #journal-list::-webkit-scrollbar, #library-list::-webkit-scrollbar { width: 4px; }
+        #journal-list::-webkit-scrollbar-thumb, #library-list::-webkit-scrollbar-thumb { background: #363c4e; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -76,7 +76,10 @@
         <div class="ai-body" id="ai-content">
             <i>Menganalisis data pasar, mohon tunggu beberapa detik... ⏳</i>
         </div>
-        <button class="action-btn" style="background: #f23645; margin-bottom: 30px;" onclick="document.getElementById('ai-modal').style.display='none'">TUTUP & KEMBALI</button>
+        <div class="trade-row" style="margin-bottom: 30px;">
+            <button class="action-btn blue" id="btn-save-ai" style="display: none;" onclick="saveToLibrary()">💾 SIMPAN</button>
+            <button class="action-btn" style="background: #f23645;" onclick="document.getElementById('ai-modal').style.display='none'">TUTUP</button>
+        </div>
     </div>
 
     <div class="tabs">
@@ -94,7 +97,7 @@
         </div>
         
         <div style="width: 100%; height: 75vh; overflow-y: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; margin-bottom: 10px; border: 1px solid #363c4e; background: #131722;">
-            <iframe src="https://strategytune.com/app" style="width: 100%; height: 1500px; border: none; display: block;" scrolling="yes"></iframe>
+            <iframe src="https://gocharting.com/terminal/chart?ticker=EXNESS:XAUUSD" style="width: 100%; height: 1500px; border: none; display: block;" scrolling="yes"></iframe>
         </div>
 
         <select id="pair" onchange="changePair()">
@@ -148,6 +151,12 @@
     </div>
 
     <div id="edu" class="content">
+        <details style="margin-bottom: 15px; border: 1px solid #089981; background: #17212b;" open>
+            <summary style="color: #089981;">📚 Perpustakaan AI Tersimpan</summary>
+            <div id="library-list" style="margin-top: 10px; max-height: 200px; overflow-y: auto; font-size: 11px;"></div>
+            <button class="action-btn sell" style="margin-top: 10px; padding: 8px; font-size: 11px;" onclick="clearLibrary()">🗑️ HAPUS PERPUSTAKAAN</button>
+        </details>
+
         <div style="background: #17212b; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #363c4e;">
             <h4 style="color:#089981;">💡 Diskusi & Tanya Bebas AI</h4>
             <input type="text" id="freeChat" placeholder="Cth: Kenapa market gold naik terus?">
@@ -656,7 +665,6 @@
 
         function checkAnswer(selected, correct) {
             document.getElementById("quiz-overlay").style.display = "none";
-            // Latar belakang permanen dengan animasi hujan
             if(selected === correct) {
                 document.body.style.backgroundColor = "#0d47a1"; 
                 Telegram.WebApp.HapticFeedback.notificationOccurred('success');
@@ -773,13 +781,11 @@
             document.getElementById('status-text').style.color = '#089981'; saveState(); Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         }
 
-        // FUNGSI INI OTOMATIS MENYIMPAN KE JURNAL
         function execClose() {
             if(currentPosition === '') return;
             let diff = (currentPosition === 'BUY') ? (currentPrice - entryPrice) : (entryPrice - currentPrice);
             let finalPnL = diff * activeLot * (document.getElementById("pair").value === 'BTCUSDT' ? 1 : 100);
             
-            // SIMPAN KE JURNAL SECARA OTOMATIS
             let pairName = document.getElementById("pair").value;
             journalData.unshift({ 
                 pair: pairName, 
@@ -789,13 +795,11 @@
                 date: new Date().toISOString() 
             });
             localStorage.setItem('tradingJournal', JSON.stringify(journalData));
-            renderJournal(); // Langsung perbarui UI jurnal
+            renderJournal(); 
             Telegram.WebApp.HapticFeedback.notificationOccurred('success');
 
-            // Kirim notifikasi ke Bot Telegram
             Telegram.WebApp.sendData(JSON.stringify({ action: 'CLOSE_TRADE', pair: pairName, type: currentPosition, pnl: finalPnL.toFixed(2) }));
             
-            // Reset state
             currentPosition = ''; localStorage.removeItem('tradeData');
             document.getElementById('status-text').innerText = `Menunggu Market...`; 
             document.getElementById('status-text').style.color = '#aaa';
@@ -815,6 +819,71 @@
         }
 
         // ==========================================
+        // SISTEM PERPUSTAKAAN AI TERSIMPAN
+        // ==========================================
+        let aiLibraryData = JSON.parse(localStorage.getItem('aiLibrary')) || [];
+        let currentAiTitle = "";
+        let currentAiContent = "";
+
+        function renderLibrary() {
+            let list = document.getElementById('library-list');
+            list.innerHTML = "";
+            if(aiLibraryData.length === 0) {
+                list.innerHTML = "<div style='text-align:center; color:#aaa; padding:10px;'>Belum ada data tersimpan. Klik tombol simpan saat AI menjawab!</div>";
+            } else {
+                aiLibraryData.forEach((item, index) => {
+                    list.innerHTML += `
+                        <div style="background: #242f3d; padding: 10px; border-radius: 5px; margin-bottom: 5px; cursor: pointer; border-left: 3px solid #2962ff;" onclick="openLibraryItem(${index})">
+                            <b style="color:#fff; font-size: 12px;">${item.title}</b><br>
+                            <i style="color:#aaa; font-size: 10px;">Klik untuk membaca kembali</i>
+                        </div>`;
+                });
+            }
+        }
+
+        function saveToLibrary() {
+            if(!currentAiContent) return;
+            // Cek duplikasi
+            let exists = aiLibraryData.find(i => i.title === currentAiTitle);
+            if(!exists) {
+                aiLibraryData.unshift({ title: currentAiTitle, content: currentAiContent });
+                localStorage.setItem('aiLibrary', JSON.stringify(aiLibraryData));
+                renderLibrary();
+                Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+                Telegram.WebApp.showAlert("✅ Jawaban AI berhasil disimpan ke Perpustakaan!");
+            } else {
+                Telegram.WebApp.showAlert("⚠️ Jawaban ini sudah ada di Perpustakaan.");
+            }
+        }
+
+        function clearLibrary() {
+            Telegram.WebApp.showConfirm("Yakin ingin menghapus semua isi Perpustakaan AI?", function(confirmed) {
+                if(confirmed) {
+                    aiLibraryData = [];
+                    localStorage.setItem('aiLibrary', JSON.stringify(aiLibraryData));
+                    renderLibrary();
+                    Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+                }
+            });
+        }
+
+        function openLibraryItem(index) {
+            let item = aiLibraryData[index];
+            const modal = document.getElementById('ai-modal');
+            const content = document.getElementById('ai-content');
+            
+            modal.style.display = 'flex';
+            content.innerHTML = item.content;
+            
+            // Sembunyikan tombol simpan karena ini data yang sudah tersimpan
+            document.getElementById('btn-save-ai').style.display = 'none';
+        }
+
+        // Panggil renderLibrary saat web dimuat
+        renderLibrary();
+
+
+        // ==========================================
         // SISTEM OTAK AI TERPUSAT DI DALAM MINI APP
         // ==========================================
         function parseMD(text) {
@@ -824,10 +893,16 @@
                 .replace(/\n/g, '<br>');
         }
 
-        async function fetchAI(promptText) {
+        async function fetchAI(promptText, titleText) {
             const modal = document.getElementById('ai-modal');
             const content = document.getElementById('ai-content');
+            const btnSave = document.getElementById('btn-save-ai');
             
+            // Reset status
+            currentAiTitle = titleText || "Penjelasan AI";
+            currentAiContent = "";
+            btnSave.style.display = 'none';
+
             modal.style.display = 'flex';
             content.innerHTML = "<i>Menganalisis skenario market... Mohon tunggu ⏳</i>";
             Telegram.WebApp.HapticFeedback.impactOccurred('medium');
@@ -846,7 +921,11 @@
                 });
                 const data = await response.json();
                 if(data.choices && data.choices.length > 0) {
-                    content.innerHTML = parseMD(data.choices[0].message.content);
+                    currentAiContent = parseMD(data.choices[0].message.content);
+                    content.innerHTML = currentAiContent;
+                    
+                    // Tampilkan tombol simpan setelah berhasil menjawab
+                    btnSave.style.display = 'block';
                     Telegram.WebApp.HapticFeedback.notificationOccurred('success');
                 } else {
                     content.innerHTML = "⚠️ Terjadi kesalahan atau batas limit API tercapai.";
@@ -863,6 +942,8 @@
             }
 
             let prompt = "";
+            let titleContext = value;
+
             if (actionType === 'EDUKASI') {
                 prompt = `[INSTRUKSI MUTLAK]: Jawab dalam Bahasa Indonesia. Dilarang pakai tag HTML. Anda adalah Mentor Institusi Hedge Fund. Jelaskan indikator '${value}': \n1. Definisi singkat \n2. Analogi kehidupan sehari-hari (penting!) \n3. Dampak ke Emas (XAUUSD) & USD \n4. Rumus trading (Jika Rilis Data Tinggi = Emas ke mana?)`;
             } else if (actionType === 'COMBO_NEWS') {
@@ -872,7 +953,7 @@
             } else if (actionType === 'FUNDAMENTAL') {
                 prompt = `[INSTRUKSI MUTLAK]: Anda Analis Berita Institusional. Kejadian: "${value}". Tugas Anda: \n1. Sentimen pasar (Risk-on/off)? \n2. Dampak USD? \n3. Dampak XAUUSD? \n4. Rekomendasi posisi (Buy/Sell/Wait) dengan alasan.`;
             }
-            fetchAI(prompt);
+            fetchAI(prompt, titleContext);
         }
 
         function processNews(tipe) {
@@ -884,12 +965,14 @@
             let fore = document.getElementById("newsFore").value || "-";
             
             let prompt = "";
+            let titleContext = tipe === 'TRANSLATE' ? `Terjemahan: ${n}` : `Analisis: ${n}`;
+
             if(tipe === 'TRANSLATE') {
                 prompt = `Terjemahkan penjelasan kalender finansial berikut secara akurat ke Bahasa Indonesia:\n\n${n}`;
             } else {
                 prompt = `[INSTRUKSI MUTLAK]: Jawab Bahasa Indonesia. Teks Berita: ${n}. \nData Rilis -> Aktual: ${act} | Prev: ${prev} | Fore: ${fore}. \nJelaskan: 1. Makna ringkasnya. 2. Analogi sederhana. 3. Dampaknya ke Emas (XAUUSD) & USD berdasarkan selisih Aktual vs Fore.`;
             }
-            fetchAI(prompt);
+            fetchAI(prompt, titleContext);
         }
     </script>
 </body>

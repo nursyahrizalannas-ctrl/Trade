@@ -75,7 +75,7 @@
             100% { transform: scale(1.5); opacity: 0; }
         }
 
-        /* POPUP AI JAWAB LANGSUNG DI MINI APP */
+        /* POPUP RESPONS ANTIPRAKTIS LOGIC */
         #ai-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(11, 14, 20, 0.98); z-index: 99999; padding: 20px; box-sizing: border-box;
@@ -89,19 +89,6 @@
         #library-list::-webkit-scrollbar { width: 4px; }
         #library-list::-webkit-scrollbar-thumb { background: #363c4e; border-radius: 4px; }
         .ebook-img { width: 100%; border-radius: 5px; margin-bottom: 10px; background: white; padding: 5px; box-sizing: border-box; display: block; }
-
-        /* PETA DUNIA MARKET SESSION */
-        .session-dot {
-            position: absolute; width: 16px; height: 16px; border-radius: 50%;
-            background: linear-gradient(135deg, #ff1744, #2962ff);
-            box-shadow: 0 0 10px #ff1744, 0 0 20px #2962ff;
-            animation: kelapKelip 1s infinite alternate;
-            display: none;
-        }
-        @keyframes kelapKelip {
-            0% { transform: scale(0.8); opacity: 0.6; box-shadow: 0 0 5px #ff1744; }
-            100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 20px #2962ff, 0 0 30px #ff1744; }
-        }
 
         /* KARTU GLOBAL MACRO */
         .macro-card {
@@ -155,18 +142,20 @@
     </div>
 
     <div id="main" class="content active">
+        <!-- REAL TIME MARKET DATA TICKER (FIXED SYMBOLS & ADAPTIVE STRUCTURE) -->
         <div style="background: #131722; border-radius: 8px; margin-bottom: 15px; overflow: hidden; border: 1px solid #363c4e;">
             <div class="tradingview-widget-container">
               <div class="tradingview-widget-container__widget"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
               {
               "symbols": [
-                { "proName": "OANDA:XAUUSD", "title": "GOLD" },
-                { "proName": "FX:EURUSD", "title": "EUR/USD" },
-                { "proName": "FX:USDJPY", "title": "USD/JPY" },
-                { "proName": "TVC:DXY", "title": "US DOLLAR" },
+                { "proName": "TVC:DXY", "title": "US DOLLAR INDEX" },
+                { "proName": "FX_IDC:USDIDR", "title": "USD / IDR" },
+                { "proName": "OANDA:XAUUSD", "title": "EMAS (GOLD)" },
+                { "proName": "FX:EURUSD", "title": "EURO / USD" },
+                { "proName": "FX:USDJPY", "title": "USD / JPY" },
                 { "proName": "BINANCE:BTCUSDT", "title": "BITCOIN" },
-                { "proName": "TVC:USOIL", "title": "CRUDE OIL" }
+                { "proName": "TVC:USOIL", "title": "MINYAK (WTI)" }
               ],
               "showSymbolLogo": true,
               "colorTheme": "dark",
@@ -176,22 +165,6 @@
             }
               </script>
             </div>
-        </div>
-
-        <div style="background: #17212b; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #363c4e; text-align:center; position:relative; overflow:hidden;" id="session-container">
-            <h4 style="color:#64b5f6; margin-top:0;">🌍 Global Market Session</h4>
-            
-            <div id="map-area" style="position:relative; width:100%; height:160px; background:url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg') no-repeat center center; background-size:contain; border-radius:8px; opacity:0.8;">
-                <div id="syd-tok" class="session-dot" style="left: 80%; top: 40%;" title="Sydney/Tokyo"></div>
-                <div id="lon" class="session-dot" style="left: 48%; top: 30%;" title="London/Eropa"></div>
-                <div id="ny" class="session-dot" style="left: 25%; top: 35%;" title="New York"></div>
-            </div>
-
-            <div id="sleep-earth" style="display:none; width:100%; height:160px; flex-direction:column; align-items:center; justify-content:center;">
-                <img src="https://cdn3d.iconscout.com/3d/premium/thumb/sleeping-earth-5120613-4277717.png?f=webp" style="height:110px;" alt="Bumi Tidur">
-            </div>
-            
-            <div id="session-status" style="font-size:13px; color:#fff; margin-top:10px; font-weight:bold;">Memuat status market...</div>
         </div>
 
         <div style="background: #17212b; padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
@@ -886,7 +859,7 @@
                         <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'API Crude Oil Stock Change')">API Crude Oil Stock</button>
                         <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'API Cushing Number')">API Cushing Number</button>
                         <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'API Distillate Stocks')">API Distillate Stocks</button>
-                        <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'API Gasoline Stocks')">API Gasoline Stocks</button>
+                        <button class="edu-btn bg-grey" onclick="askAI('API Gasoline Stocks', 'API Gasoline Stocks')">API Gasoline Stocks</button>
                         <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'Baker Hughes Oil Rig Count')">Baker Hughes Oil Rig</button>
                         <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'Baker Hughes Total Rigs Count')">Baker Hughes Total Rigs</button>
                         <button class="edu-btn bg-grey" onclick="askAI('EDUKASI', 'EIA Crude Oil Imports Change')">EIA Crude Oil Imports</button>
@@ -948,54 +921,6 @@
 
         // KUNCI API GROQ
         const GROQ_API = "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";
-
-        // ==========================================
-        // LOGIKA MARKET SESSION BUMI / PETA
-        // ==========================================
-        function updateMarketSession() {
-            let now = new Date();
-            let day = now.getUTCDay(); // 0: Sunday, 6: Saturday
-            let hour = now.getUTCHours();
-
-            let mapArea = document.getElementById('map-area');
-            let sleepEarth = document.getElementById('sleep-earth');
-            let statusText = document.getElementById('session-status');
-
-            let dotAsia = document.getElementById('syd-tok');
-            let dotLon = document.getElementById('lon');
-            let dotNY = document.getElementById('ny');
-
-            // Kalkulasi Market Tutup (Weekend)
-            let isWeekend = false;
-            if (day === 6) isWeekend = true; 
-            if (day === 0 && hour < 22) isWeekend = true; 
-            if (day === 5 && hour >= 22) isWeekend = true; 
-
-            if (isWeekend) {
-                mapArea.style.display = 'none';
-                sleepEarth.style.display = 'flex';
-                statusText.innerText = "💤 Market Libur (Bumi Sedang Tidur)";
-                return;
-            }
-
-            mapArea.style.display = 'block';
-            sleepEarth.style.display = 'none';
-
-            let activeSessions = [];
-            dotAsia.style.display = 'none';
-            dotLon.style.display = 'none';
-            dotNY.style.display = 'none';
-
-            // Jam Trading UTC
-            if (hour >= 22 || hour < 8) { activeSessions.push("Asia (Syd/Tok)"); dotAsia.style.display = 'block'; }
-            if (hour >= 7 && hour < 16) { activeSessions.push("Eropa (London)"); dotLon.style.display = 'block'; }
-            if (hour >= 12 && hour < 21) { activeSessions.push("AS (New York)"); dotNY.style.display = 'block'; }
-
-            statusText.innerText = "🔥 Sesi Aktif Saat Ini: " + (activeSessions.length > 0 ? activeSessions.join(" & ") : "Peralihan Sesi");
-        }
-
-        updateMarketSession();
-        setInterval(updateMarketSession, 60000);
 
         // ==========================================
         // DATA KUIS & ACHIEVEMENT SYSTEM
@@ -1301,7 +1226,7 @@
         }
 
         // ==========================================
-        // MASTER FUNGSI PERINTAH AI
+        // MASTER FUNGSI PERINTAH LOGIC
         // ==========================================
         function askAI(actionType, value) {
             if(!value || value.trim() === '') {
